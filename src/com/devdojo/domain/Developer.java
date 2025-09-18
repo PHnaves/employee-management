@@ -1,5 +1,6 @@
 package com.devdojo.domain;
 
+import com.devdojo.domain.enums.Benefits;
 import com.devdojo.domain.enums.Developer.ExperienceDeveloper;
 import com.devdojo.domain.enums.Developer.LanguagesDeveloper;
 import com.devdojo.domain.enums.Developer.Specialty;
@@ -8,6 +9,7 @@ public class Developer extends Employee {
     private Specialty specialty;
     private LanguagesDeveloper[] languagesDevelopers;
     private ExperienceDeveloper experienceDeveloper;
+    private Project project;
 
     {
         if (this.experienceDeveloper.equals(ExperienceDeveloper.JUNIOR)) {
@@ -23,13 +25,14 @@ public class Developer extends Employee {
     }
 
     public Developer(String name, String cpf, int age,
-                     Sex sex, String phone, double salary,
+                     Sex sex, String email, String phone, double salary, Benefits[] benefits,
                      Specialty specialty, LanguagesDeveloper[] languagesDeveloper,
-                     ExperienceDeveloper experienceDeveloper) {
-        super(name, cpf, age, sex, phone, salary);
+                     ExperienceDeveloper experienceDeveloper, Project project) {
+        super(name, cpf, age, sex, email, phone, salary, benefits);
         this.specialty = specialty;
         this.languagesDevelopers = languagesDeveloper;
         this.experienceDeveloper = experienceDeveloper;
+        this.project = project;
     }
 
     public Specialty getSpecialty() {
@@ -54,5 +57,13 @@ public class Developer extends Employee {
 
     public void setExperienceDeveloper(ExperienceDeveloper experienceDeveloper) {
         this.experienceDeveloper = experienceDeveloper;
+    }
+
+    public Project getProject() {
+        return this.project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 }
