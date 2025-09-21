@@ -1,32 +1,31 @@
 package com.devdojo.domain;
 
-import com.devdojo.domain.enums.Benefits;
+import com.devdojo.domain.enums.EmployeeBenefits;
+import com.devdojo.domain.enums.manager.ManagerDepartament;
 
 public class Manager extends Employee {
-    private String departament;
-    private Project project;
+    private ManagerDepartament managerDepartament;
+    private Employee[] employees;
 
-    public Manager(String name, String cpf, int age, Sex sex, String email, String phone,
-                   double salary, Benefits[] benefits, String departament, Project project) {
-        super(name, cpf, age, sex, email, phone, salary, benefits);
-        this.departament = departament;
-        this.project = project;
+    public Manager(int id, String name, String cpf, int age, Sex sex, String email, String phone,
+                   double salary, EmployeeBenefits[] benefits, ManagerDepartament managerDepartament, Employee[] employees) {
+        super(id, name, cpf, age, sex, email, phone, salary, benefits);
+        this.managerDepartament = managerDepartament;
     }
 
-    public String getDepartament() {
-        return departament;
+    public ManagerDepartament getDepartamentManager() {
+        return managerDepartament;
     }
 
-    public void setDepartament(String departament) {
-        this.departament = departament;
+    public void setDepartamentManager(ManagerDepartament managerDepartament) {
+        this.managerDepartament = managerDepartament;
     }
 
-    public Project getProject() {
-        return this.project;
+    public Employee[] getEmployees() {
+        return employees;
     }
 
-    public void setProject(Project project) {
-        this.project = project;
+    public void setEmployees(Employee[] employees) {
+        this.employees = employees;
     }
-
 }

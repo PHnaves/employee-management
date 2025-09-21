@@ -1,62 +1,53 @@
 package com.devdojo.domain;
 
-import com.devdojo.domain.enums.Benefits;
-import com.devdojo.domain.enums.Developer.ExperienceDeveloper;
-import com.devdojo.domain.enums.Developer.LanguagesDeveloper;
-import com.devdojo.domain.enums.Developer.Specialty;
+import com.devdojo.domain.enums.EmployeeBenefits;
+import com.devdojo.domain.enums.Developer.DeveloperExperience;
+import com.devdojo.domain.enums.Developer.DeveloperLanguages;
+import com.devdojo.domain.enums.Developer.DeveloperSpecialty;
 
 public class Developer extends Employee {
-    private Specialty specialty;
-    private LanguagesDeveloper[] languagesDevelopers;
-    private ExperienceDeveloper experienceDeveloper;
+    private DeveloperSpecialty developerSpecialty;
+    private DeveloperLanguages[] developerLanguages;
+    private DeveloperExperience developerExperience;
     private Project project;
 
-    {
-        if (this.experienceDeveloper.equals(ExperienceDeveloper.JUNIOR)) {
-            double salary = this.getSalary() + 500;
-            this.setSalary(salary);
-        } else if (this.experienceDeveloper.equals(ExperienceDeveloper.SENIOR)) {
-            double salary = this.getSalary() + 1000;
-            this.setSalary(salary);
-        } else if (this.experienceDeveloper.equals(ExperienceDeveloper.PLENO)) {
-            double salary = this.getSalary() + 1500;
-            this.setSalary(salary);
-        }
-    }
-
-    public Developer(String name, String cpf, int age,
-                     Sex sex, String email, String phone, double salary, Benefits[] benefits,
-                     Specialty specialty, LanguagesDeveloper[] languagesDeveloper,
-                     ExperienceDeveloper experienceDeveloper, Project project) {
-        super(name, cpf, age, sex, email, phone, salary, benefits);
-        this.specialty = specialty;
-        this.languagesDevelopers = languagesDeveloper;
-        this.experienceDeveloper = experienceDeveloper;
+    public Developer(int id, String name, String cpf, int age,
+                     Sex sex, String email, String phone, double salary, EmployeeBenefits[] benefits,
+                     DeveloperSpecialty developerSpecialty, DeveloperLanguages[] developerLanguages,
+                     DeveloperExperience developerExperience, Project project) {
+        super(id, name, cpf, age, sex, email, phone, salary, benefits);
+        this.developerSpecialty = developerSpecialty;
+        this.developerLanguages = developerLanguages;
+        this.developerExperience = developerExperience;
         this.project = project;
     }
 
-    public Specialty getSpecialty() {
-        return specialty;
+    public Developer(){
+
     }
 
-    public void setSpecialty(Specialty specialty) {
-        this.specialty = specialty;
+    public DeveloperSpecialty getSpecialty() {
+        return developerSpecialty;
     }
 
-    public LanguagesDeveloper[] getLanguagesDevelopers() {
-        return languagesDevelopers;
+    public void setSpecialty(DeveloperSpecialty developerSpecialty) {
+        this.developerSpecialty = developerSpecialty;
     }
 
-    public void setLanguagesDevelopers(LanguagesDeveloper[] languagesDevelopers) {
-        this.languagesDevelopers = languagesDevelopers;
+    public DeveloperLanguages[] getLanguagesDevelopers() {
+        return developerLanguages;
     }
 
-    public ExperienceDeveloper getExperienceDeveloper() {
-        return experienceDeveloper;
+    public void setLanguagesDevelopers(DeveloperLanguages[] developerLanguages) {
+        this.developerLanguages = developerLanguages;
     }
 
-    public void setExperienceDeveloper(ExperienceDeveloper experienceDeveloper) {
-        this.experienceDeveloper = experienceDeveloper;
+    public DeveloperExperience getExperienceDeveloper() {
+        return developerExperience;
+    }
+
+    public void setExperienceDeveloper(DeveloperExperience developerExperience) {
+        this.developerExperience = developerExperience;
     }
 
     public Project getProject() {

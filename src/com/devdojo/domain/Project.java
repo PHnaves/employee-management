@@ -2,15 +2,13 @@ package com.devdojo.domain;
 
 public class Project {
     private String title, description;
-    private Manager manager;
     private Developer[] developers;
     private String startDate, endDate;
 
-    public Project(String title, String description, Manager manager, Developer[] developers,
+    public Project(String title, String description, Developer[] developers,
                    String startDate, String endDate) {
         this.title = title;
         this.description = description;
-        this.manager = manager;
         this.developers = developers;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -30,14 +28,6 @@ public class Project {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Manager getManager() {
-        return manager;
-    }
-
-    public void setManager(Manager manager) {
-        this.manager = manager;
     }
 
     public Developer[] getDevelopers() {
