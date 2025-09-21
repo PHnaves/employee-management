@@ -1,6 +1,6 @@
 package com.devdojo.domain.enums.Developer;
 
-public enum ExperienceDeveloper {
+public enum DeveloperExperience {
     JUNIOR,
     SENIOR,
     PLENO

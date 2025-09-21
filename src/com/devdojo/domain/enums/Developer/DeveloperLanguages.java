@@ -1,6 +1,6 @@
 package com.devdojo.domain.enums.Developer;
 
-public enum LanguagesDeveloper {
+public enum DeveloperLanguages {
     JAVA,
     PHP,
     JAVA_SCRIPT,

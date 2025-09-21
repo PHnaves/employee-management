@@ -1,6 +1,6 @@
 package com.devdojo.domain.enums.Developer;
 
-public enum Specialty {
+public enum DeveloperSpecialty {
     BACKEND,
     FRONTEND,
     FULLSTACK,

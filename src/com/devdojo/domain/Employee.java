@@ -1,22 +1,32 @@
 package com.devdojo.domain;
 
-import com.devdojo.domain.enums.Benefits;
+import com.devdojo.domain.enums.EmployeeBenefits;
 
 public abstract class Employee extends Person {
+    private int id;
     private String email,phone;
     private double salary;
-    private Benefits[] benefits;
+    private EmployeeBenefits[] benefits;
 
     static {
         System.out.println("Primeiro funcionario cadastrado!");
     }
 
-    public Employee(String name, String cpf, int age, Sex sex, String phone, String email, double salary, Benefits[] benefits) {
+    public Employee(int id, String name, String cpf, int age, Sex sex, String phone, String email, double salary, EmployeeBenefits[] benefits) {
         super(name, cpf, age, sex);
+        this.id = id;
         this.email = email;
         this.phone = phone;
         this.salary = salary;
         this.benefits = benefits;
+    }
+
+    public Employee(){
+
+    }
+
+    public int getId(){
+        return this.id;
     }
 
     public String getEmail() {
@@ -43,11 +53,11 @@ public abstract class Employee extends Person {
         this.salary = salary;
     }
 
-    public Benefits[] getBenefits() {
+    public EmployeeBenefits[] getBenefits() {
         return this.benefits;
     }
 
-    public void setBenefits(Benefits[] benefits) {
+    public void setBenefits(EmployeeBenefits[] benefits) {
         this.benefits = benefits;
     }
 }
