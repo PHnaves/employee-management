@@ -14,6 +14,16 @@ public class Developer extends Employee {
     public Developer(int id, String name, String cpf, int age,
                      Sex sex, String email, String phone, double salary, EmployeeBenefits[] benefits,
                      DeveloperSpecialty developerSpecialty, DeveloperLanguages[] developerLanguages,
+                     DeveloperExperience developerExperience) {
+        super(id, name, cpf, age, sex, email, phone, salary, benefits);
+        this.developerSpecialty = developerSpecialty;
+        this.developerLanguages = developerLanguages;
+        this.developerExperience = developerExperience;
+    }
+
+    public Developer(int id, String name, String cpf, int age,
+                     Sex sex, String email, String phone, double salary, EmployeeBenefits[] benefits,
+                     DeveloperSpecialty developerSpecialty, DeveloperLanguages[] developerLanguages,
                      DeveloperExperience developerExperience, Project project) {
         super(id, name, cpf, age, sex, email, phone, salary, benefits);
         this.developerSpecialty = developerSpecialty;
@@ -26,27 +36,27 @@ public class Developer extends Employee {
 
     }
 
-    public DeveloperSpecialty getSpecialty() {
+    public DeveloperSpecialty getSDeveloperSpecialty() {
         return developerSpecialty;
     }
 
-    public void setSpecialty(DeveloperSpecialty developerSpecialty) {
+    public void setDeveloperSpecialty(DeveloperSpecialty developerSpecialty) {
         this.developerSpecialty = developerSpecialty;
     }
 
-    public DeveloperLanguages[] getLanguagesDevelopers() {
+    public DeveloperLanguages[] getDeveloperLanguages() {
         return developerLanguages;
     }
 
-    public void setLanguagesDevelopers(DeveloperLanguages[] developerLanguages) {
+    public void setDeveloperLanguages(DeveloperLanguages[] developerLanguages) {
         this.developerLanguages = developerLanguages;
     }
 
-    public DeveloperExperience getExperienceDeveloper() {
+    public DeveloperExperience getDeveloperExperience() {
         return developerExperience;
     }
 
-    public void setExperienceDeveloper(DeveloperExperience developerExperience) {
+    public void setDeveloperExperience(DeveloperExperience developerExperience) {
         this.developerExperience = developerExperience;
     }
 
