@@ -12,9 +12,9 @@ public class Developer extends Employee {
     private Project project;
 
     public Developer(int id, String name, String cpf, int age,
-                     Sex sex, String email, String phone, double salary, EmployeeBenefits[] benefits,
+                     Sex sex, String email, String phone, double salary,
                      DeveloperSpecialty developerSpecialty, DeveloperLanguages[] developerLanguages,
-                     DeveloperExperience developerExperience) {
+                     DeveloperExperience developerExperience, EmployeeBenefits[] benefits) {
         super(id, name, cpf, age, sex, email, phone, salary, benefits);
         this.developerSpecialty = developerSpecialty;
         this.developerLanguages = developerLanguages;
@@ -22,9 +22,9 @@ public class Developer extends Employee {
     }
 
     public Developer(int id, String name, String cpf, int age,
-                     Sex sex, String email, String phone, double salary, EmployeeBenefits[] benefits,
+                     Sex sex, String email, String phone, double salary,
                      DeveloperSpecialty developerSpecialty, DeveloperLanguages[] developerLanguages,
-                     DeveloperExperience developerExperience, Project project) {
+                     DeveloperExperience developerExperience, EmployeeBenefits[] benefits, Project project) {
         super(id, name, cpf, age, sex, email, phone, salary, benefits);
         this.developerSpecialty = developerSpecialty;
         this.developerLanguages = developerLanguages;

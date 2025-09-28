@@ -9,10 +9,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void calculatorSalaryBenefits(Employee employee) {
         EmployeeBenefits[] empBenefits = employee.getBenefits();
-        if (empBenefits == null || empBenefits.length < 1){
-            System.out.println("Voce nao possui nenhum beneficio");
-            System.out.println("Salario final: " + employee.getSalary());
-        } else {
+        if (empBenefits != null && empBenefits.length > 0){
             double totalDescont = 0.0;
             int quantityBenefits = 0;
             for (EmployeeBenefits employeeBenefits : empBenefits) {
@@ -22,16 +19,15 @@ public class EmployeeServiceImpl implements EmployeeService {
             }
 
             double salaryFinal = employee.getSalary() - totalDescont;
-            System.out.println("Voce possui " + quantityBenefits + " beneficios ativos");
             System.out.println(String.format("Total do desconto: %.2f", totalDescont));
             System.out.println(String.format("Salario final: %.2f", salaryFinal));
-
         }
     }
 
     @Override
     public void generateReport(Employee employee) {
         System.out.println("Informacoes pessoais");
+        System.out.println("ID: " + employee.getId());
         System.out.println("Nome: " + employee.getName());
         System.out.println("CPF: " + employee.getCpf());
         System.out.println("Idade: " + employee.getAge());
@@ -40,9 +36,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void benefits(Employee employee) {
-        if (employee.getBenefits() == null || employee.getBenefits().length < 1) {
-            System.out.println("Voce nao possui nenhum beneficio");
-        } else {
+        if (employee.getBenefits() != null && employee.getBenefits().length > 0) {
             System.out.println("Beneficios");
             for (EmployeeBenefits employeeBenefits : employee.getBenefits()){
                 System.out.println();
@@ -50,6 +44,10 @@ public class EmployeeServiceImpl implements EmployeeService {
                     System.out.println(benefitsEmployee);
                 }
             }
+            System.out.println();
+            calculatorSalaryBenefits(employee);
+        } else {
+            System.out.println("Voce nao possui nenhum beneficio atualmente");
         }
     }
 }
