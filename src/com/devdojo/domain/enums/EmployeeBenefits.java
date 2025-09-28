@@ -41,7 +41,7 @@ public enum EmployeeBenefits {
     LIFE_INSURANCE(new String[]{"Seguro de vida", "2% em cima do salario"}) {
         @Override
         public double descontBenefits(Employee employee) {
-            double salaryDescont = employee.getSalary() * 0.01;
+            double salaryDescont = employee.getSalary() * 0.02;
             return salaryDescont;
         }
     },
