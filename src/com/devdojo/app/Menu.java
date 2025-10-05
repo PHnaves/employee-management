@@ -44,6 +44,7 @@ public class Menu {
                             break;
                         case 5:
                             back = true;
+                            break;
                         default:
                             System.out.println("Opção invalida, tente novamente!!");
                             break;
@@ -72,7 +73,21 @@ public class Menu {
                             System.out.println("Digite o id do desenvolvedor que quer editar");
                             int updateId = scanner.nextInt();
                             scanner.nextLine();
-                            this.developerService.updateDeveloper(updateId);
+                            System.out.println("---------------------------------------------");
+                            System.out.println("1 - Editar informacoes pessoais");
+                            System.out.println("2 - Editar informacoes tecnicas");
+                            System.out.println("3 - Voltar");
+                            int optionEdit = scanner.nextInt();
+                            scanner.nextLine();
+                            if (optionEdit == 1) {
+                                this.developerService.updateDeveloper(updateId);
+                            } else if (optionEdit == 2) {
+                                this.developerService.updateTechnicalInformations(updateId);
+                            } else if (optionEdit == 3) {
+                                break;
+                            } else {
+                                System.out.println("Opcao invalida");
+                            }
                             break;
                         case 4:
                             System.out.println("Digite o id do desenvolvedor que quer gerar o relatorio completo");
