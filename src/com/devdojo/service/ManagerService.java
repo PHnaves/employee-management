@@ -8,5 +8,7 @@ public interface ManagerService extends EmployeeService{
     void readManager(int id);
     void updateManager(int id);
     void updateTechnicalInformations(int id);
-    void employeesTeam(Manager manager);
+    void deleteManager(int id);
+    void managerTeam(int id);
+    void technicalInformations(Manager manager);
 }
