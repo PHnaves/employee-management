@@ -14,4 +14,8 @@ public enum DeveloperSpecialty {
         this.specialty = specialty;
     }
 
+    public String getSpecialty() {
+        return this.specialty;
+    }
+
 }

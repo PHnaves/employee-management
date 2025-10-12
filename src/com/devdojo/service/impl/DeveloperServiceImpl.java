@@ -12,9 +12,9 @@ import com.devdojo.service.DeveloperService;
 import java.util.Scanner;
 
 public class DeveloperServiceImpl implements DeveloperService {
-    static final Scanner scanner = new Scanner(System.in);
+    public static final Scanner scanner = new Scanner(System.in);
     private final EmployeeServiceImpl employeeService = new EmployeeServiceImpl();
-    private Employee[] developersRegistereds = new Employee[]{};
+    public static Employee[] developersRegisters = new Employee[]{};
 
     @Override
     public void createDeveloper() {
@@ -42,10 +42,9 @@ public class DeveloperServiceImpl implements DeveloperService {
             } else if (inputSex.equalsIgnoreCase("feminino")) {
                 employeeSex = Person.Sex.FEMININO;
             } else {
-                System.out.println("Sexo inválido, digite novamente.");
+                System.out.println("Sexo invalido. Por favor, digite um dos valores da lista");
             }
         }
-
 
         System.out.println("Email do funcionario: ");
         String employeeEmail = scanner.nextLine();
@@ -60,11 +59,27 @@ public class DeveloperServiceImpl implements DeveloperService {
 
         System.out.println("Especialidades disponiveis");
         for (DeveloperSpecialty developerSpecialty : DeveloperSpecialty.values()) {
-            System.out.println(developerSpecialty);
+            System.out.println(developerSpecialty.getSpecialty());
         }
 
-        System.out.println("Digite respectivamente sua especialidade: ");
-        DeveloperSpecialty employeeSpecialty = DeveloperSpecialty.valueOf(scanner.nextLine().toUpperCase().trim());
+        DeveloperSpecialty employeeSpecialty = null;
+        while(true) {
+            System.out.println("Digite respectivamente sua especialidade: ");
+            String input = scanner.nextLine();
+
+            for (DeveloperSpecialty ds : DeveloperSpecialty.values()) {
+                if (ds.getSpecialty().equalsIgnoreCase(input)) {
+                    employeeSpecialty = ds;
+                    break;
+                }
+            }
+
+            if (employeeSpecialty != null) {
+                break;
+            } else {
+                System.out.println("Especialidade invalida. Por favor, digite um dos valores da lista");
+            }
+        }
 
         System.out.println("Linguagens");
         for (DeveloperLanguages developerLanguages : DeveloperLanguages.values()) {
@@ -92,17 +107,35 @@ public class DeveloperServiceImpl implements DeveloperService {
                 }
 
                 if (!valid) {
-                    System.out.println("Linguagem inválida, digite novamente!");
+                    System.out.println("Linguagem inválida. Por favor, digite um dos valores da lista");
                 }
             }
         }
 
         System.out.println("Experiencias disponiveis");
         for(DeveloperExperience developerExperience : DeveloperExperience.values()) {
-            System.out.println(developerExperience);
+            System.out.println(developerExperience.getExperience());
         }
-        System.out.println("Informe a experiencia desejada");
-        DeveloperExperience employeeExperience = DeveloperExperience.valueOf(scanner.nextLine().toUpperCase().trim());
+
+        DeveloperExperience employeeExperience = null;
+        while(true) {
+            System.out.println("Digite respectivamente sua experiencia: ");
+            String input = scanner.nextLine();
+
+            for (DeveloperExperience de : DeveloperExperience.values()) {
+                if (de.getExperience().equalsIgnoreCase(input)) {
+                    employeeExperience = de;
+                    break;
+                }
+            }
+
+            if(employeeExperience != null) {
+                break;
+            } else {
+                System.out.println("Experiencia invalida. Por favor, digite um dos valores da lista.");
+            }
+
+        }
 
         System.out.println("Beneficios disponivies");
         for (EmployeeBenefits employeeBenefits : EmployeeBenefits.values()) {
@@ -130,7 +163,7 @@ public class DeveloperServiceImpl implements DeveloperService {
                 }
 
                 if (!valid) {
-                    System.out.println("beneficio inválido, digite novamente!");
+                    System.out.println("Beneficio invalido. Por favor, digite um dos valores da lista");
                 }
             }
         }
@@ -150,25 +183,22 @@ public class DeveloperServiceImpl implements DeveloperService {
           benefitsSelect
         );
 
-        Employee[] temp = new Employee[developersRegistereds.length + 1];
+        Employee[] newEmployee = new Employee[developersRegisters.length + 1];
 
-        for (int i = 0; i < this.developersRegistereds.length; i++) {
-            temp[i] = developersRegistereds[i];
+        for (int i = 0; i < developersRegisters.length; i++) {
+            newEmployee[i] = developersRegisters[i];
         }
 
-        temp[this.developersRegistereds.length] = dev;
+        newEmployee[developersRegisters.length] = dev;
 
-        this.developersRegistereds = temp;
-
-        employeeService.generateReport(dev);
-        this.technicalInformations((Developer) dev);
+        developersRegisters = newEmployee;
 
     }
 
     @Override
     public void showDevelopers() {
         System.out.println("Desenvolvedores cadastrados");
-        for (Employee employees : developersRegistereds) {
+        for (Employee employees : developersRegisters) {
             System.out.println("ID = " + employees.getId());
             System.out.println("Nome = " + employees.getName());
             System.out.println("-------------------------------");
@@ -177,198 +207,274 @@ public class DeveloperServiceImpl implements DeveloperService {
 
     @Override
     public void readDeveloper(int id) {
-        for (Employee employee : this.developersRegistereds) {
-            if (employee.getId() == id) {
-                System.out.println("---------- RELATORIO COMPLETO ----------");
-                this.generateReport((Employee) employee);
-                System.out.println();
-                this.technicalInformations((Developer) employee);
-                System.out.println();
-                this.benefits((Employee) employee);
+        Developer targetDeveloper = null;
+        for (Employee emp : developersRegisters) {
+            if (emp instanceof Developer && emp.getId() == id) {
+                targetDeveloper = (Developer) emp;
                 break;
             }
         }
+
+        if (targetDeveloper == null) {
+            System.out.println("Desenvolvedor com ID " + id + " não encontrado.");
+            return;
+        }
+
+        System.out.println("\n------ RELATORIO DESENVOLVEDOR: " + targetDeveloper.getName() + " ------");
+        this.generateReport(targetDeveloper);
+        System.out.println();
+        this.technicalInformations(targetDeveloper);
+        System.out.println();
+        this.benefits(targetDeveloper);
     }
 
     @Override
     public void updateDeveloper(int id) {
-        for (Employee employee : developersRegistereds) {
-            if(employee.getId() == id) {
-                boolean isEdit = true;
-                while(isEdit) {
-                    System.out.println("O que desejas editar?");
-                    System.out.println("1 - Nome");
-                    System.out.println("2 - CPF");
-                    System.out.println("3 - Idade");
-                    System.out.println("4 - Sexo");
-                    System.out.println("5 - voltar");
-                    System.out.println("Digite a opcao correspondente: ");
-                    int option = scanner.nextInt();
-                    scanner.nextLine();
-
-                    switch (option) {
-                        case 1:
-                            System.out.println("Digite o novo nome: ");
-                            String newName = scanner.nextLine();
-                            employee.setName(newName);
-                            System.out.println("Quer continuar editando? Sim ou Nao");
-                            String continueEdit = scanner.nextLine();
-                            if (continueEdit.equalsIgnoreCase("nao")) {
-                                isEdit = false;
-                            }
-                            break;
-                        case 2:
-                            System.out.println("Digite o novo CPF: ");
-                            String newCpf = scanner.nextLine();
-                            employee.setCpf(newCpf);
-                            System.out.println("Quer continuar editando? Sim ou Nao");
-                            continueEdit = scanner.nextLine();
-                            if (continueEdit.equalsIgnoreCase("nao")) {
-                                isEdit = false;
-                            }
-                            break;
-                        case 3:
-                            System.out.println("Digite a nova idade: ");
-                            int newAge = scanner.nextInt();
-                            employee.setAge(newAge);
-                            System.out.println("Quer continuar editando? Sim ou Nao");
-                            continueEdit = scanner.nextLine();
-                            if (continueEdit.equalsIgnoreCase("nao")) {
-                                isEdit = false;
-                            }
-                            break;
-                        case 4:
-                            boolean isCorrect = false;
-                            while(isCorrect != true) {
-                                System.out.println("Digite o novo Sexo - MASCULINO OU FEMININO:");
-                                String newSex = scanner.nextLine().trim(); // remove espaços extras
-                                if (newSex.equalsIgnoreCase("masculino")) {
-                                    employee.setSex(Person.Sex.MASCULINO);
-                                    isCorrect = true;
-                                    break;
-                                } else if (newSex.equalsIgnoreCase("feminino")) {
-                                    employee.setSex(Person.Sex.FEMININO);
-                                    isCorrect = true;
-                                    break;
-                                } else {
-                                    System.out.println("Sexo inválido, digite novamente.");
-                                }
-                                System.out.println("Quer continuar editando? Sim ou Nao");
-                                continueEdit = scanner.nextLine();
-                                if (continueEdit.equalsIgnoreCase("nao")) {
-                                    isEdit = false;
-                                }
-                            }
-                            break;
-                        case 5:
-                            isEdit = false;
-                            break;
-
-                        default:
-                            System.out.println("Digite somente umas das opcoes!");
-                            break;
-                    }
-                }
+        Developer targetDeveloper = null;
+        for (Employee emp : developersRegisters) {
+            if (emp instanceof Developer && emp.getId() == id) {
+                targetDeveloper = (Developer) emp;
+                break;
             }
         }
-    }
 
-    public void updateTechnicalInformations(int id) {
-        for (Employee employee : developersRegistereds) {
-            if (employee instanceof Developer developer) {
-                if(developer.getId() == id) {
+        if (targetDeveloper == null) {
+            System.out.println("Desenvolvedor com ID " + id + " não encontrado.");
+            return;
+        }
 
-                    boolean isEdit = true;
-                    while(isEdit) {
-                        System.out.println("O que desejas editar?");
-                        System.out.println("1 - Especialidade");
-                        System.out.println("2 - Linguagens");
-                        System.out.println("3 - Experiencia");
-                        System.out.println("4 - Sair");
-                        System.out.println("Digite a opcao correspondente: ");
-                        int option = scanner.nextInt();
-                        scanner.nextLine();
+        while(true) {
+            System.out.println("\n------ EDITAR INFORMACOES PESSOAIS DESENVOLVEDOR: " + targetDeveloper.getName() + " ------");
+            System.out.println("1 - Nome");
+            System.out.println("2 - CPF");
+            System.out.println("3 - Idade");
+            System.out.println("4 - Sexo");
+            System.out.println("5 - voltar");
+            System.out.println("Digite a opcao correspondente: ");
+            int option = scanner.nextInt();
+            scanner.nextLine();
 
-                        switch (option) {
-                            case 1:
-                                System.out.println("Especialidades disponiveis");
-                                for (DeveloperSpecialty developerSpecialty : DeveloperSpecialty.values()) {
-                                    System.out.println(developerSpecialty);
-                                }
+            String continueEdit = null;
+            switch (option) {
+                case 1:
+                    System.out.println("Digite o novo nome: ");
+                    String newName = scanner.nextLine();
+                    targetDeveloper.setName(newName);
+                    System.out.println("Nome editado com sucesso!");
 
-                                System.out.println("Digite respectivamente sua nova especialidade: ");
-                                DeveloperSpecialty newSpecialty = DeveloperSpecialty.valueOf(scanner.nextLine().toUpperCase().trim());
-                                developer.setDeveloperSpecialty(newSpecialty);
+                    System.out.println("Quer continuar editando? SIM ou NAO");
+                    continueEdit = scanner.nextLine().toUpperCase();
+                    if (continueEdit.equals("NAO")) {
+                        System.out.println("Voltando ao menu anterior...");
+                        return;
+                    }
+                    break;
+                case 2:
+                    System.out.println("Digite o novo CPF: ");
+                    String newCpf = scanner.nextLine();
+                    targetDeveloper.setCpf(newCpf);
+                    System.out.println("CPF editado com sucesso!");
 
-                                System.out.println("Quer continuar editando? Sim ou Nao");
-                                String continueEdit = scanner.nextLine();
-                                if (continueEdit.equalsIgnoreCase("nao")) {
-                                    isEdit = false;
-                                }
-                                break;
-                            case 2:
-                                System.out.println("Linguagens disponiveis");
-                                for (DeveloperLanguages developerLanguages : DeveloperLanguages.values()) {
-                                    System.out.println(developerLanguages);
-                                }
+                    System.out.println("Quer continuar editando? SIM ou NAO");
+                    continueEdit = scanner.nextLine().toUpperCase();
+                    if (continueEdit.equals("NAO")) {
+                        System.out.println("Voltando ao menu anterior...");
+                        return;
+                    }
+                    break;
+                case 3:
+                    System.out.println("Digite a nova idade: ");
+                    int newAge = scanner.nextInt();
+                    scanner.nextLine();
+                    targetDeveloper.setAge(newAge);
+                    System.out.println("Idade editada com sucesso!");
 
-                                System.out.println("Quantas linguagens quer adicionar? ");
-                                int languagesQuantity = scanner.nextInt();
-                                scanner.nextLine();
-                                DeveloperLanguages[] newLanguagesSelect = new DeveloperLanguages[languagesQuantity];
-
-                                for (int i = 0; i < languagesQuantity; i++) {
-                                    boolean valid = false;
-
-                                    while (!valid) {
-                                        System.out.print((i + 1) + "ª linguagem: ");
-                                        String input = scanner.nextLine().toUpperCase().replace(" ", "_");
-
-                                        for (DeveloperLanguages dl : DeveloperLanguages.values()) {
-                                            if (dl.name().equals(input)) {
-                                                newLanguagesSelect[i] = dl;
-                                                valid = true;
-                                                break;
-                                            }
-                                        }
-
-                                        if (!valid) {
-                                            System.out.println("Linguagem inválida, digite novamente!");
-                                        }
-                                    }
-                                }
-                                developer.setDeveloperLanguages(newLanguagesSelect);
-
-                                System.out.println("Quer continuar editando? Sim ou Nao");
-                                continueEdit = scanner.nextLine();
-                                if (continueEdit.equalsIgnoreCase("nao")) {
-                                    isEdit = false;
-                                }
-                                break;
-                            case 3:
-                                System.out.println("Experiencias disponiveis");
-                                for(DeveloperExperience developerExperience : DeveloperExperience.values()) {
-                                    System.out.println(developerExperience);
-                                }
-                                System.out.println("Digite a nova experiencia desejada");
-                                DeveloperExperience newExperience = DeveloperExperience.valueOf(scanner.nextLine().toUpperCase().trim());
-                                developer.setDeveloperExperience(newExperience);
-
-                                System.out.println("Quer continuar editando? Sim ou Nao");
-                                continueEdit = scanner.nextLine();
-                                if (continueEdit.equalsIgnoreCase("nao")) {
-                                    isEdit = false;
-                                }
-                                break;
-                            case 4:
-                                isEdit = false;
-                                break;
-                            default:
-                                System.out.println("Digite somente umas das opcoes!");
-                                break;
+                    System.out.println("Quer continuar editando? SIM ou NAO");
+                    continueEdit = scanner.nextLine();
+                    if (continueEdit.equals("NAO")) {
+                        System.out.println("Voltando ao menu anterior...");
+                        return;
+                    }
+                    break;
+                case 4:
+                    boolean isCorrect = false;
+                    while(!isCorrect) {
+                        System.out.println("Digite o novo Sexo - MASCULINO OU FEMININO:");
+                        String newSex = scanner.nextLine().trim(); // remove espaços extras
+                        if (newSex.equalsIgnoreCase("masculino")) {
+                            targetDeveloper.setSex(Person.Sex.MASCULINO);
+                            System.out.println("Sexo editado com sucesso!");
+                            isCorrect = true;
+                        } else if (newSex.equalsIgnoreCase("feminino")) {
+                            targetDeveloper.setSex(Person.Sex.FEMININO);
+                            System.out.println("Sexo editado com sucesso!");
+                            isCorrect = true;
+                        } else {
+                            System.out.println("Sexo inválido, digite novamente.");
                         }
                     }
-                }
+
+                    System.out.println("Quer continuar editando? Sim ou Nao");
+                    continueEdit = scanner.nextLine();
+                    if (continueEdit.equalsIgnoreCase("nao")) {
+                        System.out.println("Voltando ao menu anterior...");
+                        return;
+                    }
+                    break;
+                case 5:
+                    System.out.println("Voltando ao menu anterior...");
+                    return;
+                default:
+                    System.out.println("Digite somente umas das opcoes!");
+                    break;
+            }
+        }
+
+
+    }
+
+    @Override
+    public void updateTechnicalInformations(int id) {
+        Developer targetDeveloper = null;
+        for (Employee emp : developersRegisters) {
+            if (emp instanceof Developer && emp.getId() == id) {
+                targetDeveloper = (Developer) emp;
+                break;
+            }
+        }
+
+        if (targetDeveloper == null) {
+            System.out.println("Desenvolvedor com ID " + id + " não encontrado.");
+            return;
+        }
+
+        while(true) {
+            System.out.println("\n------ EDITAR INFORMACOES TECNICAS DESENVOLVEDOR: " + targetDeveloper.getName() + " ------");
+            System.out.println("1 - Especialidade");
+            System.out.println("2 - Linguagens");
+            System.out.println("3 - Experiencia");
+            System.out.println("4 - Sair");
+            System.out.println("Digite a opcao correspondente: ");
+            int option = scanner.nextInt();
+            scanner.nextLine();
+
+            String continueEdit = null;
+            switch (option) {
+                case 1:
+                    System.out.println("Especialidades disponiveis");
+                    for (DeveloperSpecialty developerSpecialty : DeveloperSpecialty.values()) {
+                        System.out.println(developerSpecialty.getSpecialty());
+                    }
+
+                    DeveloperSpecialty newSpecialty = null;
+                    while(true) {
+                        System.out.println("Digite respectivamente sua nova especialidade: ");
+                        String input = scanner.nextLine();
+
+                        for (DeveloperSpecialty ds : DeveloperSpecialty.values()) {
+                            if (ds.getSpecialty().equalsIgnoreCase(input)) {
+                                newSpecialty = ds;
+                                break;
+                            }
+                        }
+
+                        if (newSpecialty != null) {
+                            targetDeveloper.setDeveloperSpecialty(newSpecialty);
+                            System.out.println("Especialidade editada com sucesso!");
+                            break;
+                        } else {
+                            System.out.println("Especialidade invalida. Por favor, digite um dos valores da lista");
+                        }
+                    }
+
+                    System.out.println("Quer continuar editando? SIM ou NAO");
+                    continueEdit = scanner.nextLine().toUpperCase();
+                    if (continueEdit.equals("NAO")) {
+                        System.out.println("Voltando ao menu anterior...");
+                        return;
+                    }
+                    break;
+                case 2:
+                    System.out.println("Linguagens disponiveis");
+                    for (DeveloperLanguages developerLanguages : DeveloperLanguages.values()) {
+                        System.out.println(developerLanguages);
+                    }
+
+                    System.out.println("Quantas linguagens quer adicionar? ");
+                    int languagesQuantity = scanner.nextInt();
+                    scanner.nextLine();
+                    DeveloperLanguages[] newLanguagesSelect = new DeveloperLanguages[languagesQuantity];
+
+                    for (int i = 0; i < languagesQuantity; i++) {
+                        boolean valid = false;
+
+                        while (!valid) {
+                            System.out.print((i + 1) + "ª linguagem: ");
+                            String input = scanner.nextLine().toUpperCase().replace(" ", "_");
+
+                            for (DeveloperLanguages dl : DeveloperLanguages.values()) {
+                                if (dl.name().equals(input)) {
+                                    newLanguagesSelect[i] = dl;
+                                    valid = true;
+                                    break;
+                                }
+                            }
+
+                            if (!valid) {
+                                System.out.println("Linguagem inválida, digite novamente!");
+                            }
+                        }
+                    }
+                    targetDeveloper.setDeveloperLanguages(newLanguagesSelect);
+                    System.out.println("Linguagem editada com sucesso!");
+
+                    System.out.println("Quer continuar editando? SIM ou NAO");
+                    continueEdit = scanner.nextLine().toUpperCase();
+                    if (continueEdit.equals("NAO")) {
+                        System.out.println("Voltando ao menu anterior...");
+                        return;
+                    }
+                    break;
+                case 3:
+                    System.out.println("Experiencias disponiveis");
+                    for(DeveloperExperience developerExperience : DeveloperExperience.values()) {
+                        System.out.println(developerExperience.getExperience());
+                    }
+
+                    DeveloperExperience newExperience = null;
+                    while(true) {
+                        System.out.println("Digite respectivamente sua nova experiencia: ");
+                        String input = scanner.nextLine();
+
+                        for (DeveloperExperience de : DeveloperExperience.values()) {
+                            if (de.getExperience().equalsIgnoreCase(input)) {
+                                newExperience = de;
+                                break;
+                            }
+                        }
+
+                        if(newExperience != null) {
+                            targetDeveloper.setDeveloperExperience(newExperience);
+                            break;
+                        } else {
+                            System.out.println("Experiencia invalida. Por favor, digite um dos valores da lista.");
+                        }
+
+                    }
+
+                    System.out.println("Quer continuar editando? SIM ou NAO");
+                    continueEdit = scanner.nextLine().toUpperCase();
+                    if (continueEdit.equals("NAO")) {
+                        System.out.println("Voltando ao menu anterior...");
+                        return;
+                    }
+                    break;
+                case 4:
+                    System.out.println("Voltando ao menu anterior...");
+                    return;
+                default:
+                    System.out.println("Digite somente umas das opcoes!");
+                    break;
             }
         }
     }
@@ -377,8 +483,8 @@ public class DeveloperServiceImpl implements DeveloperService {
     public void deleteDeveloper(int id) {
         int indexToRemove = -1;
 
-        for (int i = 0; i < this.developersRegistereds.length; i++) {
-            if (this.developersRegistereds[i].getId() == id) {
+        for (int i = 0; i < developersRegisters.length; i++) {
+            if (developersRegisters[i].getId() == id) {
                 indexToRemove = i;
                 break;
             }
@@ -389,17 +495,17 @@ public class DeveloperServiceImpl implements DeveloperService {
             return;
         }
 
-        Employee[] temp = new Employee[this.developersRegistereds.length - 1];
+        Employee[] temp = new Employee[developersRegisters.length - 1];
 
-        for (int i = 0, j = 0; i < this.developersRegistereds.length; i++) {
+        for (int i = 0, j = 0; i < developersRegisters.length; i++) {
             if (i != indexToRemove) {
-                temp[j++] = this.developersRegistereds[i];
+                temp[j++] = developersRegisters[i];
             }
         }
 
-        this.developersRegistereds = temp;
+        developersRegisters = temp;
 
-        System.out.println("Funcionário com ID " + id + " removido com sucesso!");
+        System.out.println("Desenvolvedor com ID " + id + " removido com sucesso!");
     }
 
     @Override
@@ -443,5 +549,9 @@ public class DeveloperServiceImpl implements DeveloperService {
     @Override
     public void benefits(Employee employee) {
         employeeService.benefits(employee);
+    }
+
+    public Employee[] getDevelopersRegisters() {
+        return developersRegisters;
     }
 }
