@@ -158,8 +158,37 @@ public class Menu {
                     }
                 }
             } else if (option == 3) {
-                System.out.println("projetos");
-                break;
+                boolean back = false;
+                while(!back) {
+                    System.out.println("-----DESENVOLVEDORES-----");
+                    System.out.println("1 - Criar novo projeto");
+                    System.out.println("2 - Listar projetos");
+                    System.out.println("3 - Editar projeto");
+                    System.out.println("4 - Excluir projeto");
+                    System.out.println("5 - Relatorio projeto");
+                    System.out.println("6 - Voltar");
+                    int optionProject = scanner.nextInt();
+                    scanner.nextLine();
+
+                    switch (optionProject) {
+                        case 1:
+                            break;
+                        case 2:
+                            break;
+                        case 3:
+                            break;
+                        case 4:
+                            break;
+                        case 5:
+                            break;
+                        case 6:
+                            back = true;
+                            break;
+                        default:
+                            System.out.println("Opção invalida, tente novamente!!");
+                            break;
+                    }
+                }
             } else if (option == 4) {
                 conditional = false;
                 break;
