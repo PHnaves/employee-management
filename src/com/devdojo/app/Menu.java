@@ -3,6 +3,7 @@ package com.devdojo.app;
 
 import com.devdojo.service.impl.DeveloperServiceImpl;
 import com.devdojo.service.impl.ManagerServiceImpl;
+import com.devdojo.service.impl.ProjectServiceImpl;
 
 import java.util.Scanner;
 
@@ -10,6 +11,7 @@ public class Menu {
     static final Scanner scanner = new Scanner(System.in);
     private final DeveloperServiceImpl developerService = new DeveloperServiceImpl();
     private final ManagerServiceImpl managerService = new ManagerServiceImpl();
+    private final ProjectServiceImpl projectService = new ProjectServiceImpl();
 
     public Menu() {
         boolean conditional = true;
@@ -160,28 +162,45 @@ public class Menu {
             } else if (option == 3) {
                 boolean back = false;
                 while(!back) {
-                    System.out.println("-----DESENVOLVEDORES-----");
+                    System.out.println("-----PROJETOS-----");
                     System.out.println("1 - Criar novo projeto");
                     System.out.println("2 - Listar projetos");
                     System.out.println("3 - Editar projeto");
                     System.out.println("4 - Excluir projeto");
-                    System.out.println("5 - Relatorio projeto");
-                    System.out.println("6 - Voltar");
+                    System.out.println("5 - Gerenciar equipe projeto");
+                    System.out.println("6 - Relatorio projeto");
+                    System.out.println("7 - Voltar");
                     int optionProject = scanner.nextInt();
                     scanner.nextLine();
 
                     switch (optionProject) {
                         case 1:
+                            projectService.createProject();
                             break;
                         case 2:
+                            projectService.showProjects();
                             break;
                         case 3:
+                            System.out.println("Digite o titulo do projeto que quer editar");
+                            String titleProjectUpdate = scanner.nextLine();
+                            projectService.updateProject(titleProjectUpdate);
                             break;
                         case 4:
+                            System.out.println("Digite o titulo do projeto que quer excluir");
+                            String titleProjectDelete = scanner.nextLine();
+                            projectService.deleteProject(titleProjectDelete);
                             break;
                         case 5:
+                            System.out.println("Digite o titulo do projeto que quer gerenciar a equipe");
+                            String titleProjectManager = scanner.nextLine();
+                            projectService.managerTeam(titleProjectManager);
                             break;
                         case 6:
+                            System.out.println("Digite o titulo do projeto que quer gerar o relatorio");
+                            String titleProjectRead= scanner.nextLine();
+                            projectService.readProject(titleProjectRead);
+                            break;
+                        case 7:
                             back = true;
                             break;
                         default:
