@@ -15,86 +15,86 @@ public class DeveloperServiceImpl implements DeveloperService {
 
     @Override
     public void createDeveloper() {
-        System.out.println("-----Informacoes pessoais-----");
-        System.out.println("ID do desenvolvedor: ");
+        System.out.println("\n=========================================");
+        System.out.println("📝 INFORMACOES PESSOAIS DO DESENVOLVEDOR 📝");
+        System.out.println("=========================================");
+
+        System.out.print("ID do desenvolvedor: ");
         int developerId = DataStorage.scanner.nextInt();
         DataStorage.scanner.nextLine();
 
-        System.out.println("Nome do desenvolvedor");
+        System.out.print("Nome do desenvolvedor: ");
         String developerName = DataStorage.scanner.nextLine();
 
-        System.out.println("Cpf do desenvolvedor: ");
+        System.out.print("CPF do desenvolvedor: ");
         String developerCpf = DataStorage.scanner.nextLine();
 
-        System.out.println("Idade do desenvolvedor: ");
+        System.out.print("Idade do desenvolvedor: ");
         int developerAge = DataStorage.scanner.nextInt();
         DataStorage.scanner.nextLine();
 
         Person.Sex developerSex = null;
-        while(developerSex == null) {
-            System.out.println("Sexo - MASCULINO OU FEMININO:");
-            String inputSex = DataStorage.scanner.nextLine().trim(); // remove espaços extras
+        while (developerSex == null) {
+            System.out.print("Sexo (MASCULINO/FEMININO): ");
+            String inputSex = DataStorage.scanner.nextLine().trim();
             if (inputSex.equalsIgnoreCase("masculino")) {
                 developerSex = Person.Sex.MASCULINO;
             } else if (inputSex.equalsIgnoreCase("feminino")) {
                 developerSex = Person.Sex.FEMININO;
             } else {
-                System.out.println("Sexo invalido. Por favor, digite um dos valores da lista");
+                System.out.println("⚠ Sexo inválido. Digite MASCULINO ou FEMININO.");
             }
         }
 
-        System.out.println("Email do desenvolvedor: ");
+        System.out.print("Email do desenvolvedor: ");
         String developerEmail = DataStorage.scanner.nextLine();
 
-        System.out.println("Telefone do desenvolvedor: ");
+        System.out.print("Telefone do desenvolvedor: ");
         String developerPhone = DataStorage.scanner.nextLine();
 
-        System.out.println("-----Informacoes tecnicas-----");
-        System.out.println("Salario do desenvolvedor: ");
+        System.out.println("\n=========================================");
+        System.out.println("💻 INFORMACOES TECNICAS DO DESENVOLVEDOR 💻");
+        System.out.println("=========================================");
+
+        System.out.print("Salario do desenvolvedor: R$ ");
         double developerSalary = DataStorage.scanner.nextDouble();
         DataStorage.scanner.nextLine();
 
-        System.out.println("Especialidades disponiveis");
-        for (DeveloperSpecialty developerSpecialty : DeveloperSpecialty.values()) {
-            System.out.println(developerSpecialty.getSpecialty());
+        System.out.println("\nEspecialidades disponíveis:");
+        for (DeveloperSpecialty ds : DeveloperSpecialty.values()) {
+            System.out.println(" - " + ds.getSpecialty());
         }
 
         DeveloperSpecialty developerSpecialty = null;
-        while(true) {
-            System.out.println("Digite respectivamente sua especialidade: ");
+        while (developerSpecialty == null) {
+            System.out.print("Digite sua especialidade: ");
             String input = DataStorage.scanner.nextLine();
-
             for (DeveloperSpecialty ds : DeveloperSpecialty.values()) {
                 if (ds.getSpecialty().equalsIgnoreCase(input)) {
                     developerSpecialty = ds;
                     break;
                 }
             }
-
-            if (developerSpecialty != null) {
-                break;
-            } else {
-                System.out.println("Especialidade invalida. Por favor, digite um dos valores da lista");
+            if (developerSpecialty == null) {
+                System.out.println("⚠ Especialidade inválida. Tente novamente.");
             }
         }
 
-        System.out.println("Linguagens");
-        for (DeveloperLanguages developerLanguages : DeveloperLanguages.values()) {
-            System.out.println(developerLanguages);
+        System.out.println("\nLinguagens disponíveis:");
+        for (DeveloperLanguages dl : DeveloperLanguages.values()) {
+            System.out.println(" - " + dl);
         }
 
-        System.out.println("Quantas linguagens quer adicionar ao cadastro? ");
+        System.out.print("Quantas linguagens quer adicionar? ");
         int languagesQuantity = DataStorage.scanner.nextInt();
         DataStorage.scanner.nextLine();
         DeveloperLanguages[] developerLanguages = new DeveloperLanguages[languagesQuantity];
 
         for (int i = 0; i < languagesQuantity; i++) {
             boolean valid = false;
-
             while (!valid) {
                 System.out.print((i + 1) + "ª linguagem: ");
                 String input = DataStorage.scanner.nextLine().toUpperCase().replace(" ", "_");
-
                 for (DeveloperLanguages dl : DeveloperLanguages.values()) {
                     if (dl.name().equals(input)) {
                         developerLanguages[i] = dl;
@@ -102,55 +102,43 @@ public class DeveloperServiceImpl implements DeveloperService {
                         break;
                     }
                 }
-
-                if (!valid) {
-                    System.out.println("Linguagem inválida. Por favor, digite um dos valores da lista");
-                }
+                if (!valid) System.out.println("⚠ Linguagem inválida. Tente novamente.");
             }
         }
 
-        System.out.println("Experiencias disponiveis");
-        for(DeveloperExperience developerExperience : DeveloperExperience.values()) {
-            System.out.println(developerExperience.getExperience());
+        System.out.println("\nExperiências disponíveis:");
+        for (DeveloperExperience de : DeveloperExperience.values()) {
+            System.out.println(" - " + de.getExperience());
         }
 
         DeveloperExperience developerExperience = null;
-        while(true) {
-            System.out.println("Digite respectivamente sua experiencia: ");
+        while (developerExperience == null) {
+            System.out.print("Digite sua experiência: ");
             String input = DataStorage.scanner.nextLine();
-
             for (DeveloperExperience de : DeveloperExperience.values()) {
                 if (de.getExperience().equalsIgnoreCase(input)) {
                     developerExperience = de;
                     break;
                 }
             }
-
-            if(developerExperience != null) {
-                break;
-            } else {
-                System.out.println("Experiencia invalida. Por favor, digite um dos valores da lista.");
-            }
-
+            if (developerExperience == null) System.out.println("⚠ Experiência inválida. Tente novamente.");
         }
 
-        System.out.println("Beneficios disponivies");
-        for (EmployeeBenefits employeeBenefits : EmployeeBenefits.values()) {
-            System.out.println(employeeBenefits.getBenefits()[0]);
+        System.out.println("\nBenefícios disponíveis:");
+        for (EmployeeBenefits eb : EmployeeBenefits.values()) {
+            System.out.println(" - " + eb.getBenefits()[0]);
         }
 
-        System.out.println("Quantos beneficios quer adicionar? ");
+        System.out.print("Quantos benefícios quer adicionar? ");
         int benefitsQuantity = DataStorage.scanner.nextInt();
         DataStorage.scanner.nextLine();
         EmployeeBenefits[] developerBenefits = new EmployeeBenefits[benefitsQuantity];
 
         for (int i = 0; i < benefitsQuantity; i++) {
             boolean valid = false;
-
             while (!valid) {
-                System.out.print((i + 1) + "ª beneficio: ");
+                System.out.print((i + 1) + "º benefício: ");
                 String input = DataStorage.scanner.nextLine().trim();
-
                 for (EmployeeBenefits db : EmployeeBenefits.values()) {
                     if (db.getBenefits()[0].equalsIgnoreCase(input)) {
                         developerBenefits[i] = db;
@@ -158,47 +146,44 @@ public class DeveloperServiceImpl implements DeveloperService {
                         break;
                     }
                 }
-
-                if (!valid) {
-                    System.out.println("Beneficio invalido. Por favor, digite um dos valores da lista");
-                }
+                if (!valid) System.out.println("⚠ Benefício inválido. Tente novamente.");
             }
         }
 
         Developer newDev = new Developer(
-          developerId,
-          developerName,
-          developerCpf,
-          developerAge,
-          developerSex,
-          developerEmail,
-          developerPhone,
-          developerSalary,
-          developerSpecialty,
-          developerLanguages,
-          developerExperience,
-          developerBenefits
+                developerId,
+                developerName,
+                developerCpf,
+                developerAge,
+                developerSex,
+                developerEmail,
+                developerPhone,
+                developerSalary,
+                developerSpecialty,
+                developerLanguages,
+                developerExperience,
+                developerBenefits
         );
 
         Developer[] newDeveloperRegisters = new Developer[DataStorage.developersRegisters.length + 1];
-
         for (int i = 0; i < DataStorage.developersRegisters.length; i++) {
             newDeveloperRegisters[i] = DataStorage.developersRegisters[i];
         }
-
         newDeveloperRegisters[DataStorage.developersRegisters.length] = newDev;
-
         DataStorage.developersRegisters = newDeveloperRegisters;
 
+        System.out.println("\n✅ Desenvolvedor cadastrado com sucesso!");
     }
 
     @Override
     public void showDevelopers() {
-        System.out.println("Desenvolvedores cadastrados");
+        System.out.println("\n=========================================");
+        System.out.println("👥 DESENVOLVEDORES CADASTRADOS 👥");
+        System.out.println("=========================================");
         for (Developer dev : DataStorage.developersRegisters) {
-            System.out.println("ID = " + dev.getId());
-            System.out.println("Nome = " + dev.getName());
-            System.out.println("-------------------------------");
+            System.out.printf("ID   : %d%n", dev.getId());
+            System.out.printf("Nome : %s%n", dev.getName());
+            System.out.println("-----------------------------------------");
         }
     }
 
@@ -211,13 +196,14 @@ public class DeveloperServiceImpl implements DeveloperService {
                 break;
             }
         }
-
         if (targetDeveloper == null) {
-            System.out.println("Desenvolvedor com ID " + id + " não encontrado.");
+            System.out.println("⚠ Desenvolvedor com ID " + id + " não encontrado.");
             return;
         }
 
-        System.out.println("\n------ RELATORIO DESENVOLVEDOR: " + targetDeveloper.getName() + " ------");
+        System.out.println("\n=========================================");
+        System.out.println("📄 RELATÓRIO DO DESENVOLVEDOR: " + targetDeveloper.getName());
+        System.out.println("=========================================");
         this.generateReport(targetDeveloper);
         System.out.println();
         this.technicalInformations(targetDeveloper);
@@ -234,100 +220,68 @@ public class DeveloperServiceImpl implements DeveloperService {
                 break;
             }
         }
-
         if (targetDeveloper == null) {
-            System.out.println("Desenvolvedor com ID " + id + " não encontrado.");
+            System.out.println("⚠ Desenvolvedor com ID " + id + " não encontrado.");
             return;
         }
 
-        while(true) {
-            System.out.println("\n------ EDITAR INFORMACOES PESSOAIS DESENVOLVEDOR: " + targetDeveloper.getName() + " ------");
+        while (true) {
+            System.out.println("\n=========================================");
+            System.out.println("✏️ EDITAR INFORMAÇÕES PESSOAIS: " + targetDeveloper.getName());
+            System.out.println("=========================================");
             System.out.println("1 - Nome");
             System.out.println("2 - CPF");
             System.out.println("3 - Idade");
             System.out.println("4 - Sexo");
-            System.out.println("5 - voltar");
-            System.out.println("Digite a opcao correspondente: ");
+            System.out.println("5 - Voltar");
+            System.out.print("Escolha a opção: ");
+
             int option = DataStorage.scanner.nextInt();
             DataStorage.scanner.nextLine();
 
-            String continueEdit = null;
             switch (option) {
-                case 1:
-                    System.out.println("Digite o novo nome: ");
-                    String newName = DataStorage.scanner.nextLine();
-                    targetDeveloper.setName(newName);
-                    System.out.println("Nome editado com sucesso!");
-
-                    System.out.println("Quer continuar editando? SIM ou NAO");
-                    continueEdit = DataStorage.scanner.nextLine().toUpperCase();
-                    if (continueEdit.equals("NAO")) {
-                        System.out.println("Voltando ao menu anterior...");
-                        return;
-                    }
-                    break;
-                case 2:
-                    System.out.println("Digite o novo CPF: ");
-                    String newCpf = DataStorage.scanner.nextLine();
-                    targetDeveloper.setCpf(newCpf);
-                    System.out.println("CPF editado com sucesso!");
-
-                    System.out.println("Quer continuar editando? SIM ou NAO");
-                    continueEdit = DataStorage.scanner.nextLine().toUpperCase();
-                    if (continueEdit.equals("NAO")) {
-                        System.out.println("Voltando ao menu anterior...");
-                        return;
-                    }
-                    break;
-                case 3:
-                    System.out.println("Digite a nova idade: ");
-                    int newAge = DataStorage.scanner.nextInt();
+                case 1 -> {
+                    System.out.print("Digite o novo nome: ");
+                    targetDeveloper.setName(DataStorage.scanner.nextLine());
+                    System.out.println("✅ Nome editado com sucesso!");
+                }
+                case 2 -> {
+                    System.out.print("Digite o novo CPF: ");
+                    targetDeveloper.setCpf(DataStorage.scanner.nextLine());
+                    System.out.println("✅ CPF editado com sucesso!");
+                }
+                case 3 -> {
+                    System.out.print("Digite a nova idade: ");
+                    targetDeveloper.setAge(DataStorage.scanner.nextInt());
                     DataStorage.scanner.nextLine();
-                    targetDeveloper.setAge(newAge);
-                    System.out.println("Idade editada com sucesso!");
-
-                    System.out.println("Quer continuar editando? SIM ou NAO");
-                    continueEdit = DataStorage.scanner.nextLine();
-                    if (continueEdit.equals("NAO")) {
-                        System.out.println("Voltando ao menu anterior...");
-                        return;
+                    System.out.println("✅ Idade editada com sucesso!");
+                }
+                case 4 -> {
+                    Person.Sex newSex = null;
+                    while (newSex == null) {
+                        System.out.print("Digite o novo sexo (MASCULINO/FEMININO): ");
+                        String input = DataStorage.scanner.nextLine().trim();
+                        if (input.equalsIgnoreCase("masculino")) newSex = Person.Sex.MASCULINO;
+                        else if (input.equalsIgnoreCase("feminino")) newSex = Person.Sex.FEMININO;
+                        else System.out.println("⚠ Sexo inválido. Digite MASCULINO ou FEMININO.");
                     }
-                    break;
-                case 4:
-                    boolean isCorrect = false;
-                    while(!isCorrect) {
-                        System.out.println("Digite o novo Sexo - MASCULINO OU FEMININO:");
-                        String newSex = DataStorage.scanner.nextLine().trim(); // remove espaços extras
-                        if (newSex.equalsIgnoreCase("masculino")) {
-                            targetDeveloper.setSex(Person.Sex.MASCULINO);
-                            System.out.println("Sexo editado com sucesso!");
-                            isCorrect = true;
-                        } else if (newSex.equalsIgnoreCase("feminino")) {
-                            targetDeveloper.setSex(Person.Sex.FEMININO);
-                            System.out.println("Sexo editado com sucesso!");
-                            isCorrect = true;
-                        } else {
-                            System.out.println("Sexo inválido, digite novamente.");
-                        }
-                    }
-
-                    System.out.println("Quer continuar editando? Sim ou Nao");
-                    continueEdit = DataStorage.scanner.nextLine();
-                    if (continueEdit.equalsIgnoreCase("nao")) {
-                        System.out.println("Voltando ao menu anterior...");
-                        return;
-                    }
-                    break;
-                case 5:
+                    targetDeveloper.setSex(newSex);
+                    System.out.println("✅ Sexo editado com sucesso!");
+                }
+                case 5 -> {
                     System.out.println("Voltando ao menu anterior...");
                     return;
-                default:
-                    System.out.println("Digite somente umas das opcoes!");
-                    break;
+                }
+                default -> System.out.println("⚠ Opção inválida! Tente novamente.");
+            }
+
+            System.out.print("Deseja continuar editando? (SIM/NAO): ");
+            String cont = DataStorage.scanner.nextLine().trim();
+            if (cont.equalsIgnoreCase("nao")) {
+                System.out.println("Voltando ao menu anterior...");
+                return;
             }
         }
-
-
     }
 
     @Override
@@ -339,180 +293,134 @@ public class DeveloperServiceImpl implements DeveloperService {
                 break;
             }
         }
-
         if (targetDeveloper == null) {
-            System.out.println("Desenvolvedor com ID " + id + " não encontrado.");
+            System.out.println("⚠ Desenvolvedor com ID " + id + " não encontrado.");
             return;
         }
 
-        while(true) {
-            System.out.println("\n------ EDITAR INFORMACOES TECNICAS DESENVOLVEDOR: " + targetDeveloper.getName() + " ------");
+        while (true) {
+            System.out.println("\n=========================================");
+            System.out.println("💻 EDITAR INFORMAÇÕES TECNICAS: " + targetDeveloper.getName());
+            System.out.println("=========================================");
             System.out.println("1 - Especialidade");
             System.out.println("2 - Linguagens");
-            System.out.println("3 - Experiencia");
-            System.out.println("4 - Sair");
-            System.out.println("Digite a opcao correspondente: ");
+            System.out.println("3 - Experiência");
+            System.out.println("4 - Voltar");
+            System.out.print("Escolha a opção: ");
+
             int option = DataStorage.scanner.nextInt();
             DataStorage.scanner.nextLine();
 
-            String continueEdit = null;
             switch (option) {
-                case 1:
-                    System.out.println("Especialidades disponiveis");
+                case 1 -> {
+                    System.out.println("\nEspecialidades disponíveis:");
                     for (DeveloperSpecialty ds : DeveloperSpecialty.values()) {
-                        System.out.println(ds.getSpecialty());
+                        System.out.println(" - " + ds.getSpecialty());
                     }
-
-                    DeveloperSpecialty newSpecialty = null;
-                    while(true) {
-                        System.out.println("Digite respectivamente sua nova especialidade: ");
+                    DeveloperSpecialty newSpec = null;
+                    while (newSpec == null) {
+                        System.out.print("Digite a nova especialidade: ");
                         String input = DataStorage.scanner.nextLine();
-
                         for (DeveloperSpecialty ds : DeveloperSpecialty.values()) {
                             if (ds.getSpecialty().equalsIgnoreCase(input)) {
-                                newSpecialty = ds;
+                                newSpec = ds;
                                 break;
                             }
                         }
-
-                        if (newSpecialty != null) {
-                            targetDeveloper.setDeveloperSpecialty(newSpecialty);
-                            System.out.println("Especialidade editada com sucesso!");
-                            break;
-                        } else {
-                            System.out.println("Especialidade invalida. Por favor, digite um dos valores da lista");
-                        }
+                        if (newSpec == null) System.out.println("⚠ Especialidade inválida. Tente novamente.");
                     }
-
-                    System.out.println("Quer continuar editando? SIM ou NAO");
-                    continueEdit = DataStorage.scanner.nextLine().toUpperCase();
-                    if (continueEdit.equals("NAO")) {
-                        System.out.println("Voltando ao menu anterior...");
-                        return;
-                    }
-                    break;
-                case 2:
-                    System.out.println("Linguagens disponiveis");
-                    for (DeveloperLanguages dl : DeveloperLanguages.values()) {
-                        System.out.println(dl);
-                    }
-
-                    System.out.println("Quantas linguagens quer adicionar? ");
-                    int languagesQuantity = DataStorage.scanner.nextInt();
+                    targetDeveloper.setDeveloperSpecialty(newSpec);
+                    System.out.println("✅ Especialidade editada com sucesso!");
+                }
+                case 2 -> {
+                    System.out.println("\nLinguagens disponíveis:");
+                    for (DeveloperLanguages dl : DeveloperLanguages.values()) System.out.println(" - " + dl);
+                    System.out.print("Quantas linguagens quer adicionar? ");
+                    int qty = DataStorage.scanner.nextInt();
                     DataStorage.scanner.nextLine();
-                    DeveloperLanguages[] newLanguagesSelect = new DeveloperLanguages[languagesQuantity];
-
-                    for (int i = 0; i < languagesQuantity; i++) {
+                    DeveloperLanguages[] newLangs = new DeveloperLanguages[qty];
+                    for (int i = 0; i < qty; i++) {
                         boolean valid = false;
-
                         while (!valid) {
                             System.out.print((i + 1) + "ª linguagem: ");
                             String input = DataStorage.scanner.nextLine().toUpperCase().replace(" ", "_");
-
                             for (DeveloperLanguages dl : DeveloperLanguages.values()) {
                                 if (dl.name().equals(input)) {
-                                    newLanguagesSelect[i] = dl;
+                                    newLangs[i] = dl;
                                     valid = true;
                                     break;
                                 }
                             }
-
-                            if (!valid) {
-                                System.out.println("Linguagem inválida, digite novamente!");
-                            }
+                            if (!valid) System.out.println("⚠ Linguagem inválida. Tente novamente.");
                         }
                     }
-                    targetDeveloper.setDeveloperLanguages(newLanguagesSelect);
-                    System.out.println("Linguagem editada com sucesso!");
-
-                    System.out.println("Quer continuar editando? SIM ou NAO");
-                    continueEdit = DataStorage.scanner.nextLine().toUpperCase();
-                    if (continueEdit.equals("NAO")) {
-                        System.out.println("Voltando ao menu anterior...");
-                        return;
-                    }
-                    break;
-                case 3:
-                    System.out.println("Experiencias disponiveis");
-                    for(DeveloperExperience de : DeveloperExperience.values()) {
-                        System.out.println(de.getExperience());
-                    }
-
-                    DeveloperExperience newExperience = null;
-                    while(true) {
-                        System.out.println("Digite respectivamente sua nova experiencia: ");
+                    targetDeveloper.setDeveloperLanguages(newLangs);
+                    System.out.println("✅ Linguagens editadas com sucesso!");
+                }
+                case 3 -> {
+                    System.out.println("\nExperiências disponíveis:");
+                    for (DeveloperExperience de : DeveloperExperience.values()) System.out.println(" - " + de.getExperience());
+                    DeveloperExperience newExp = null;
+                    while (newExp == null) {
+                        System.out.print("Digite a nova experiência: ");
                         String input = DataStorage.scanner.nextLine();
-
                         for (DeveloperExperience de : DeveloperExperience.values()) {
                             if (de.getExperience().equalsIgnoreCase(input)) {
-                                newExperience = de;
+                                newExp = de;
                                 break;
                             }
                         }
-
-                        if(newExperience != null) {
-                            targetDeveloper.setDeveloperExperience(newExperience);
-                            break;
-                        } else {
-                            System.out.println("Experiencia invalida. Por favor, digite um dos valores da lista.");
-                        }
-
+                        if (newExp == null) System.out.println("⚠ Experiência inválida. Tente novamente.");
                     }
-
-                    System.out.println("Quer continuar editando? SIM ou NAO");
-                    continueEdit = DataStorage.scanner.nextLine().toUpperCase();
-                    if (continueEdit.equals("NAO")) {
-                        System.out.println("Voltando ao menu anterior...");
-                        return;
-                    }
-                    break;
-                case 4:
+                    targetDeveloper.setDeveloperExperience(newExp);
+                    System.out.println("✅ Experiência editada com sucesso!");
+                }
+                case 4 -> {
                     System.out.println("Voltando ao menu anterior...");
                     return;
-                default:
-                    System.out.println("Digite somente umas das opcoes!");
-                    break;
+                }
+                default -> System.out.println("⚠ Opção inválida! Tente novamente.");
             }
+
+            System.out.print("Deseja continuar editando? (SIM/NAO): ");
+            String cont = DataStorage.scanner.nextLine().trim();
+            if (cont.equalsIgnoreCase("nao")) return;
         }
     }
 
     @Override
     public void deleteDeveloper(int id) {
-        int indexToRemove = -1;
-
+        Developer targetDeveloper = null;
+        int index = -1;
         for (int i = 0; i < DataStorage.developersRegisters.length; i++) {
             if (DataStorage.developersRegisters[i].getId() == id) {
-                indexToRemove = i;
+                targetDeveloper = DataStorage.developersRegisters[i];
+                index = i;
                 break;
             }
         }
-
-        if (indexToRemove == -1) {
-            System.out.println("Funcionário com ID " + id + " não encontrado.");
+        if (targetDeveloper == null) {
+            System.out.println("⚠ Desenvolvedor com ID " + id + " não encontrado.");
             return;
         }
 
-        Developer[] deleteDeveloper = new Developer[DataStorage.developersRegisters.length - 1];
-
-        for (int i = 0, j = 0; i < DataStorage.developersRegisters.length; i++) {
-            if (i != indexToRemove) {
-                deleteDeveloper[j++] = DataStorage.developersRegisters[i];
-            }
+        Developer[] newArray = new Developer[DataStorage.developersRegisters.length - 1];
+        int j = 0;
+        for (int i = 0; i < DataStorage.developersRegisters.length; i++) {
+            if (i != index) newArray[j++] = DataStorage.developersRegisters[i];
         }
-
-        DataStorage.developersRegisters = deleteDeveloper;
-
-        System.out.println("Desenvolvedor com ID " + id + " removido com sucesso!");
+        DataStorage.developersRegisters = newArray;
+        System.out.println("✅ Desenvolvedor " + targetDeveloper.getName() + " deletado com sucesso!");
     }
 
     @Override
     public void technicalInformations(Developer developer) {
-        System.out.println("Informacoes tecnicas");
-        System.out.println("Nivel de experiencia: " + developer.getDeveloperExperience());
-        System.out.println("Especialidade: " + developer.getSDeveloperSpecialty());
-        System.out.println("Linguagens utilizadas");
+        System.out.println("\n💻 INFORMAÇÕES TÉCNICAS 💻");
+        System.out.println("Nível de experiência : " + developer.getDeveloperExperience());
+        System.out.println("Especialidade       : " + developer.getSDeveloperSpecialty());
+        System.out.println("Linguagens utilizadas:");
         for (DeveloperLanguages dl : developer.getDeveloperLanguages()) {
-            System.out.println(dl.getLanguages());
+            System.out.println(" - " + dl.getLanguages());
         }
     }
 
@@ -525,31 +433,33 @@ public class DeveloperServiceImpl implements DeveloperService {
                 break;
             }
         }
-
         if (targetDeveloper == null) {
-            System.out.println("Desenvolvedor com ID " + id + " não encontrado.");
+            System.out.println("⚠ Desenvolvedor com ID " + id + " não encontrado.");
             return;
         }
 
-        System.out.println("\n------ PROJETO DESENVOLVEDOR: " + targetDeveloper.getName() + " ------");
-        if (targetDeveloper.getProject() == null){
-            System.out.println("Nenhum projeto associado");
+        System.out.println("\n=========================================");
+        System.out.println("📁 PROJETO DO DESENVOLVEDOR: " + targetDeveloper.getName());
+        System.out.println("=========================================");
+
+        if (targetDeveloper.getProject() == null) {
+            System.out.println("Nenhum projeto associado.");
             return;
         }
-        System.out.println("Titulo: " + targetDeveloper.getProject().getTitle());
-        System.out.println("Descricao");
-        System.out.println(targetDeveloper.getProject().getDescription());
-        System.out.println("Data de inicio: " + targetDeveloper.getProject().getStartDate());
-        System.out.println("Data de conclusao: " + targetDeveloper.getProject().getEndDate());
-        if (targetDeveloper.getProject().getDevelopers() != null ) {
-            System.out.println("Equipe");
-            for (Developer team: targetDeveloper.getProject().getDevelopers()) {
-                System.out.println(team.getName());
+
+        System.out.println("Título          : " + targetDeveloper.getProject().getTitle());
+        System.out.println("Descrição       : " + targetDeveloper.getProject().getDescription());
+        System.out.println("Data de início  : " + targetDeveloper.getProject().getStartDate());
+        System.out.println("Data de conclusão: " + targetDeveloper.getProject().getEndDate());
+
+        if (targetDeveloper.getProject().getDevelopers() != null) {
+            System.out.println("Equipe:");
+            for (Developer team : targetDeveloper.getProject().getDevelopers()) {
+                System.out.println(" - " + team.getName());
             }
-        }else {
-            System.out.println("Sem equipe! somente voce no momento");
+        } else {
+            System.out.println("Sem equipe! Somente você no momento.");
         }
-
     }
 
     @Override

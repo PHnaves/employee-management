@@ -9,45 +9,55 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void calculatorSalaryBenefits(Employee employee) {
         EmployeeBenefits[] empBenefits = employee.getBenefits();
-        if (empBenefits != null && empBenefits.length > 0){
+        if (empBenefits != null && empBenefits.length > 0) {
             double totalDescont = 0.0;
-            int quantityBenefits = 0;
             for (EmployeeBenefits employeeBenefits : empBenefits) {
-                double descont = employeeBenefits.descontBenefits(employee);
-                totalDescont += descont;
-                quantityBenefits++;
+                totalDescont += employeeBenefits.descontBenefits(employee);
             }
 
             double salaryFinal = employee.getSalary() - totalDescont;
-            System.out.println(String.format("Total do desconto: %.2f", totalDescont));
-            System.out.println(String.format("Salario final: %.2f", salaryFinal));
+
+            System.out.println("\n=========================================");
+            System.out.println("💰 CÁLCULO DE SALÁRIO E BENEFÍCIOS 💰");
+            System.out.println("=========================================");
+            System.out.printf("Total de desconto: R$ %.2f%n", totalDescont);
+            System.out.printf("Salário final    : R$ %.2f%n", salaryFinal);
+            System.out.println("=========================================\n");
+        } else {
+            System.out.println("\n⚠ O funcionário não possui benefícios para calcular.\n");
         }
     }
 
     @Override
     public void generateReport(Employee employee) {
-        System.out.println("Informacoes pessoais");
-        System.out.println("ID: " + employee.getId());
-        System.out.println("Nome: " + employee.getName());
-        System.out.println("CPF: " + employee.getCpf());
-        System.out.println("Idade: " + employee.getAge());
-        System.out.println("Sexo: " + employee.getSex());
+        System.out.printf("ID   : %d%n", employee.getId());
+        System.out.printf("Nome : %s%n", employee.getName());
+        System.out.printf("CPF  : %s%n", employee.getCpf());
+        System.out.printf("Idade: %d%n", employee.getAge());
+        System.out.printf("Sexo : %s%n", employee.getSex());
+        System.out.println("=========================================\n");
     }
 
     @Override
     public void benefits(Employee employee) {
-        if (employee.getBenefits() != null && employee.getBenefits().length > 0) {
-            System.out.println("Beneficios");
-            for (EmployeeBenefits employeeBenefits : employee.getBenefits()){
-                System.out.println();
-                for (String benefitsEmployee : employeeBenefits.getBenefits()){
-                    System.out.println(benefitsEmployee);
+        EmployeeBenefits[] empBenefits = employee.getBenefits();
+        System.out.println("\n=========================================");
+        System.out.println("🎁 BENEFÍCIOS DO FUNCIONÁRIO 🎁");
+        System.out.println("=========================================");
+
+        if (empBenefits != null && empBenefits.length > 0) {
+            for (int i = 0; i < empBenefits.length; i++) {
+                System.out.println((i + 1) + "º Benefício:");
+                for (String benefit : empBenefits[i].getBenefits()) {
+                    System.out.println(" - " + benefit);
                 }
+                System.out.println("-----------------------------------------");
             }
-            System.out.println();
             calculatorSalaryBenefits(employee);
         } else {
-            System.out.println("Voce nao possui nenhum beneficio atualmente");
+            System.out.println("⚠ Este funcionário não possui benefícios atualmente.");
         }
+
+        System.out.println("=========================================\n");
     }
 }
