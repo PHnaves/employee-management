@@ -5,13 +5,6 @@ public class Project {
     private Developer[] developers;
     private String startDate, endDate;
 
-    public Project(String title, String description, String startDate, String endDate) {
-        this.title = title;
-        this.description = description;
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
-
     public Project(String title, String description, Developer[] developers, String startDate, String endDate) {
         this.title = title;
         this.description = description;

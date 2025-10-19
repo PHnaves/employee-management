@@ -1,5 +1,6 @@
 package com.devdojo.service.impl;
 
+import com.devdojo.domain.Developer;
 import com.devdojo.domain.Employee;
 import com.devdojo.domain.Manager;
 import com.devdojo.domain.Person;
@@ -7,36 +8,32 @@ import com.devdojo.domain.enums.EmployeeBenefits;
 import com.devdojo.domain.enums.manager.ManagerDepartament;
 import com.devdojo.domain.enums.manager.ManagerResponsibility;
 import com.devdojo.service.ManagerService;
-
-import java.util.Scanner;
+import com.devdojo.storage.DataStorage;
 
 public class ManagerServiceImpl implements ManagerService {
-    public static final Scanner scanner = new Scanner(System.in);
     private final EmployeeServiceImpl employeeService = new EmployeeServiceImpl();
-    private final DeveloperServiceImpl developerService = new DeveloperServiceImpl();
-    public static Employee[] managersRegisters = new Employee[]{};
 
     @Override
     public void createManager() {
         System.out.println("-----Informacoes pessoais-----");
-        System.out.println("ID do usuario: ");
-        int managerId = scanner.nextInt();
-        scanner.nextLine();
+        System.out.println("ID do gerente: ");
+        int managerId = DataStorage.scanner.nextInt();
+        DataStorage.scanner.nextLine();
 
-        System.out.println("Nome do funcionario");
-        String managerName = scanner.nextLine();
+        System.out.println("Nome do gerente");
+        String managerName = DataStorage.scanner.nextLine();
 
-        System.out.println("Cpf do funcionario: ");
-        String managerCpf = scanner.nextLine();
+        System.out.println("Cpf do gerente: ");
+        String managerCpf = DataStorage.scanner.nextLine();
 
-        System.out.println("Idade do funcionario: ");
-        int managerAge = scanner.nextInt();
-        scanner.nextLine();
+        System.out.println("Idade do gerente: ");
+        int managerAge = DataStorage.scanner.nextInt();
+        DataStorage.scanner.nextLine();
 
         Person.Sex managerSex = null;
         while(managerSex == null) {
             System.out.println("Sexo - MASCULINO OU FEMININO:");
-            String inputSex = scanner.nextLine().trim(); // remove espaços extras
+            String inputSex = DataStorage.scanner.nextLine().trim(); // remove espaços extras
             if (inputSex.equalsIgnoreCase("masculino")) {
                 managerSex = Person.Sex.MASCULINO;
             } else if (inputSex.equalsIgnoreCase("feminino")) {
@@ -46,26 +43,26 @@ public class ManagerServiceImpl implements ManagerService {
             }
         }
 
-        System.out.println("Email do funcionario: ");
-        String managerEmail = scanner.nextLine();
+        System.out.println("Email do gerente: ");
+        String managerEmail = DataStorage.scanner.nextLine();
 
-        System.out.println("Telefone do funcionario: ");
-        String managerPhone = scanner.nextLine();
+        System.out.println("Telefone do gerente: ");
+        String managerPhone = DataStorage.scanner.nextLine();
 
         System.out.println("-----Informacoes tecnicas-----");
-        System.out.println("Salario do funcionario: ");
-        double managerSalary = scanner.nextDouble();
-        scanner.nextLine();
+        System.out.println("Salario do gerente: ");
+        double managerSalary = DataStorage.scanner.nextDouble();
+        DataStorage.scanner.nextLine();
 
         System.out.println("Departamentos disponiveis");
-        for (ManagerDepartament managerDepartament : ManagerDepartament.values()) {
-            System.out.println(managerDepartament.getDepartament());
+        for (ManagerDepartament md : ManagerDepartament.values()) {
+            System.out.println(md.getDepartament());
         }
 
         ManagerDepartament managerDepartament = null;
         while(true) {
             System.out.print("Digite respectivamente seu departamento: ");
-            String input = scanner.nextLine();
+            String input = DataStorage.scanner.nextLine();
 
             for (ManagerDepartament md : ManagerDepartament.values()) {
                 if (md.getDepartament().equalsIgnoreCase(input)) {
@@ -82,14 +79,14 @@ public class ManagerServiceImpl implements ManagerService {
         }
 
         System.out.println("responsabilidades disponiveis");
-        for (ManagerResponsibility managerResponsability : ManagerResponsibility.values()) {
-            System.out.println(managerResponsability.getResponsability());
+        for (ManagerResponsibility mr : ManagerResponsibility.values()) {
+            System.out.println(mr.getResponsability());
         }
 
         ManagerResponsibility managerResponsibility = null;
         while(true) {
             System.out.print("Digite respectivamente sua responsabilidade: ");
-            String input = scanner.nextLine();
+            String input = DataStorage.scanner.nextLine();
 
 
             for (ManagerResponsibility mr : ManagerResponsibility.values()) {
@@ -107,25 +104,25 @@ public class ManagerServiceImpl implements ManagerService {
         }
 
         System.out.println("Beneficios disponivies");
-        for (EmployeeBenefits employeeBenefits : EmployeeBenefits.values()) {
-            System.out.println(employeeBenefits.getBenefits()[0]);
+        for (EmployeeBenefits mb : EmployeeBenefits.values()) {
+            System.out.println(mb.getBenefits()[0]);
         }
 
         System.out.println("Quantos beneficios quer adicionar? ");
-        int benefitsQuantity = scanner.nextInt();
-        scanner.nextLine();
-        EmployeeBenefits[] benefitsSelect = new EmployeeBenefits[benefitsQuantity];
+        int benefitsQuantity = DataStorage.scanner.nextInt();
+        DataStorage.scanner.nextLine();
+        EmployeeBenefits[] managerBenefits = new EmployeeBenefits[benefitsQuantity];
 
         for (int i = 0; i < benefitsQuantity; i++) {
             boolean valid = false;
 
             while (!valid) {
                 System.out.print((i + 1) + "ª beneficio: ");
-                String input = scanner.nextLine().trim();
+                String input = DataStorage.scanner.nextLine().trim();
 
-                for (EmployeeBenefits eb : EmployeeBenefits.values()) {
-                    if (eb.getBenefits()[0].equalsIgnoreCase(input)) {
-                        benefitsSelect[i] = eb;
+                for (EmployeeBenefits mb : EmployeeBenefits.values()) {
+                    if (mb.getBenefits()[0].equalsIgnoreCase(input)) {
+                        managerBenefits[i] = mb;
                         valid = true;
                         break;
                     }
@@ -137,7 +134,7 @@ public class ManagerServiceImpl implements ManagerService {
             }
         }
 
-        Employee manager = new Manager(
+        Manager manager = new Manager(
                 managerId,
                 managerName,
                 managerCpf,
@@ -148,24 +145,24 @@ public class ManagerServiceImpl implements ManagerService {
                 managerSalary,
                 managerDepartament,
                 managerResponsibility,
-                benefitsSelect
+                managerBenefits
         );
 
-        Employee[] temp = new Employee[managersRegisters.length + 1];
+        Manager[] newManagerRegisters = new Manager[DataStorage.managersRegisters.length + 1];
 
-        for (int i = 0; i < managersRegisters.length; i++) {
-            temp[i] = managersRegisters[i];
+        for (int i = 0; i < DataStorage.managersRegisters.length; i++) {
+            newManagerRegisters[i] = DataStorage.managersRegisters[i];
         }
 
-        temp[managersRegisters.length] = manager;
+        newManagerRegisters[DataStorage.managersRegisters.length] = manager;
 
-        managersRegisters = temp;
+        DataStorage.managersRegisters = newManagerRegisters;
     }
 
     @Override
     public void showManager() {
         System.out.println("Gerentes cadastrados");
-        for (Employee manager : managersRegisters) {
+        for (Manager manager : DataStorage.managersRegisters) {
             System.out.println("ID = " + manager.getId());
             System.out.println("Nome = " + manager.getName());
             System.out.println("-------------------------------");
@@ -175,9 +172,9 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public void readManager(int id) {
         Manager targetManager = null;
-        for (Employee emp : managersRegisters) {
-            if (emp instanceof Manager && emp.getId() == id) {
-                targetManager = (Manager) emp;
+        for (Manager manager : DataStorage.managersRegisters) {
+            if (manager.getId() == id) {
+                targetManager = manager;
                 break;
             }
         }
@@ -198,9 +195,9 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public void updateManager(int id) {
         Manager targetManager = null;
-        for (Employee emp : managersRegisters) {
-            if (emp instanceof Manager && emp.getId() == id) {
-                targetManager = (Manager) emp;
+        for (Manager manager : DataStorage.managersRegisters) {
+            if (manager.getId() == id) {
+                targetManager = manager;
                 break;
             }
         }
@@ -218,19 +215,19 @@ public class ManagerServiceImpl implements ManagerService {
             System.out.println("4 - Sexo");
             System.out.println("5 - voltar");
             System.out.println("Digite a opcao correspondente: ");
-            int option = scanner.nextInt();
-            scanner.nextLine();
+            int option = DataStorage.scanner.nextInt();
+            DataStorage.scanner.nextLine();
 
             String continueEdit = null;
             switch (option) {
                 case 1:
                     System.out.println("Digite o novo nome: ");
-                    String newName = scanner.nextLine();
+                    String newName = DataStorage.scanner.nextLine();
                     targetManager.setName(newName);
                     System.out.println("Nome editado com sucesso!");
 
                     System.out.println("Quer continuar editando? SIM ou NAO");
-                    continueEdit = scanner.nextLine().toUpperCase();
+                    continueEdit = DataStorage.scanner.nextLine().toUpperCase();
                     if (continueEdit.equals("NAO")) {
                         System.out.println("Voltando ao menu anterior...");
                         return;
@@ -238,12 +235,12 @@ public class ManagerServiceImpl implements ManagerService {
                     break;
                 case 2:
                     System.out.println("Digite o novo CPF: ");
-                    String newCpf = scanner.nextLine();
+                    String newCpf = DataStorage.scanner.nextLine();
                     targetManager.setCpf(newCpf);
                     System.out.println("CPF editado com sucesso!");
 
                     System.out.println("Quer continuar editando? SIM ou NAO");
-                    continueEdit = scanner.nextLine().toUpperCase();
+                    continueEdit = DataStorage.scanner.nextLine().toUpperCase();
                     if (continueEdit.equals("NAO")) {
                         System.out.println("Voltando ao menu anterior...");
                         return;
@@ -251,13 +248,13 @@ public class ManagerServiceImpl implements ManagerService {
                     break;
                 case 3:
                     System.out.println("Digite a nova idade: ");
-                    int newAge = scanner.nextInt();
-                    scanner.nextLine();
+                    int newAge = DataStorage.scanner.nextInt();
+                    DataStorage.scanner.nextLine();
                     targetManager.setAge(newAge);
                     System.out.println("Idade editada com sucesso!");
 
                     System.out.println("Quer continuar editando? SIM ou NAO");
-                    continueEdit = scanner.nextLine();
+                    continueEdit = DataStorage.scanner.nextLine();
                     if (continueEdit.equals("NAO")) {
                         System.out.println("Voltando ao menu anterior...");
                         return;
@@ -267,7 +264,7 @@ public class ManagerServiceImpl implements ManagerService {
                     boolean isCorrect = false;
                     while(!isCorrect) {
                         System.out.println("Digite o novo Sexo - MASCULINO OU FEMININO:");
-                        String newSex = scanner.nextLine().trim(); // remove espaços extras
+                        String newSex = DataStorage.scanner.nextLine().trim(); // remove espaços extras
                         if (newSex.equalsIgnoreCase("masculino")) {
                             targetManager.setSex(Person.Sex.MASCULINO);
                             System.out.println("Sexo editado com sucesso!");
@@ -282,7 +279,7 @@ public class ManagerServiceImpl implements ManagerService {
                     }
 
                     System.out.println("Quer continuar editando? Sim ou Nao");
-                    continueEdit = scanner.nextLine();
+                    continueEdit = DataStorage.scanner.nextLine();
                     if (continueEdit.equalsIgnoreCase("nao")) {
                         System.out.println("Voltando ao menu anterior...");
                         return;
@@ -303,9 +300,9 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public void updateTechnicalInformations(int id) {
         Manager targetManager = null;
-        for (Employee emp : managersRegisters) {
-            if (emp instanceof Manager && emp.getId() == id) {
-                targetManager = (Manager) emp;
+        for (Manager manager : DataStorage.managersRegisters) {
+            if (manager.getId() == id) {
+                targetManager = manager;
                 break;
             }
         }
@@ -321,21 +318,21 @@ public class ManagerServiceImpl implements ManagerService {
             System.out.println("2 - Responsabilidade");
             System.out.println("3 - Sair");
             System.out.println("Digite a opcao correspondente: ");
-            int option = scanner.nextInt();
-            scanner.nextLine();
+            int option = DataStorage.scanner.nextInt();
+            DataStorage.scanner.nextLine();
 
             String continueEdit = null;
             switch (option) {
                 case 1:
                     System.out.println("Departamentos disponiveis");
-                    for (ManagerDepartament managerDepartament : ManagerDepartament.values()) {
-                        System.out.println(managerDepartament.getDepartament());
+                    for (ManagerDepartament md : ManagerDepartament.values()) {
+                        System.out.println(md.getDepartament());
                     }
 
                     ManagerDepartament newDepartament = null;
                     while(true) {
                         System.out.print("Digite respectivamente seu novo departamento: ");
-                        String input = scanner.nextLine();
+                        String input = DataStorage.scanner.nextLine();
 
                         for (ManagerDepartament md : ManagerDepartament.values()) {
                             if (md.getDepartament().equalsIgnoreCase(input)) {
@@ -354,7 +351,7 @@ public class ManagerServiceImpl implements ManagerService {
                     }
 
                     System.out.println("Quer continuar editando? SIM ou NAO");
-                    continueEdit = scanner.nextLine().toUpperCase();
+                    continueEdit = DataStorage.scanner.nextLine().toUpperCase();
                     if (continueEdit.equals("NAO")) {
                         System.out.println("Voltando ao menu anterior...");
                         return;
@@ -362,14 +359,14 @@ public class ManagerServiceImpl implements ManagerService {
                     break;
                 case 2:
                     System.out.println("responsabilidades disponiveis");
-                    for (ManagerResponsibility managerResponsability : ManagerResponsibility.values()) {
-                        System.out.println(managerResponsability.getResponsability());
+                    for (ManagerResponsibility mr : ManagerResponsibility.values()) {
+                        System.out.println(mr.getResponsability());
                     }
 
                     ManagerResponsibility newResponsability = null;
                     while(true) {
                         System.out.print("Digite respectivamente sua nova responsabilidade: ");
-                        String input = scanner.nextLine();
+                        String input = DataStorage.scanner.nextLine();
 
 
                         for (ManagerResponsibility mr : ManagerResponsibility.values()) {
@@ -389,7 +386,7 @@ public class ManagerServiceImpl implements ManagerService {
                     }
 
                     System.out.println("Quer continuar editando? SIM ou NAO");
-                    continueEdit = scanner.nextLine().toUpperCase();
+                    continueEdit = DataStorage.scanner.nextLine().toUpperCase();
                     if (continueEdit.equals("NAO")) {
                         System.out.println("Voltando ao menu anterior...");
                         return;
@@ -409,8 +406,8 @@ public class ManagerServiceImpl implements ManagerService {
     public void deleteManager(int id) {
         int indexToRemove = -1;
 
-        for (int i = 0; i < managersRegisters.length; i++) {
-            if (managersRegisters[i].getId() == id) {
+        for (int i = 0; i < DataStorage.managersRegisters.length; i++) {
+            if (DataStorage.managersRegisters[i].getId() == id) {
                 indexToRemove = i;
                 break;
             }
@@ -421,15 +418,15 @@ public class ManagerServiceImpl implements ManagerService {
             return;
         }
 
-        Employee[] temp = new Employee[managersRegisters.length - 1];
+        Manager[] deleteManager = new Manager[DataStorage.managersRegisters.length - 1];
 
-        for (int i = 0, j = 0; i < managersRegisters.length; i++) {
+        for (int i = 0, j = 0; i < DataStorage.managersRegisters.length; i++) {
             if (i != indexToRemove) {
-                temp[j++] = managersRegisters[i];
+                deleteManager[j++] = DataStorage.managersRegisters[i];
             }
         }
 
-        managersRegisters = temp;
+        DataStorage.managersRegisters = deleteManager;
 
         System.out.println("Gerente com ID " + id + " removido com sucesso!");
     }
@@ -437,9 +434,9 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public void managerTeam(int id) {
         Manager targetManager = null;
-        for (Employee emp : managersRegisters) {
-            if (emp instanceof Manager && emp.getId() == id) {
-                targetManager = (Manager) emp;
+        for (Manager manager : DataStorage.managersRegisters) {
+            if (manager.getId() == id) {
+                targetManager = manager;
                 break;
             }
         }
@@ -456,8 +453,8 @@ public class ManagerServiceImpl implements ManagerService {
             System.out.println("3 - Remover developer da equipe");
             System.out.println("4 - Voltar ao menu anterior");
             System.out.print("Escolha uma opção: ");
-            int option = scanner.nextInt();
-            scanner.nextLine();
+            int option = DataStorage.scanner.nextInt();
+            DataStorage.scanner.nextLine();
 
             switch (option) {
                 case 1:
@@ -475,23 +472,23 @@ public class ManagerServiceImpl implements ManagerService {
                     break;
                 case 2:
                     System.out.println("------ ADICIONAR DESENVOLVEDOR ------");
-                    if (developerService.getDevelopersRegisters().length == 0) {
+                    if (DataStorage.developersRegisters.length == 0) {
                         System.out.println("Nenhum desenvolvedor cadastrado no sistema para adicionar.");
                         break;
                     }
 
                     System.out.println("Desenvolvedores disponíveis:");
-                    for (Employee employeeAvailable : developerService.getDevelopersRegisters()) {
-                        System.out.println("ID = " + employeeAvailable.getId() + ", Nome = " + employeeAvailable.getName());
+                    for (Developer developerAvailable : DataStorage.developersRegisters) {
+                        System.out.println("ID = " + developerAvailable.getId() + ", Nome = " + developerAvailable.getName());
                     }
 
                     System.out.print("Digite o ID do novo membro da equipe: ");
-                    int employeeIdToAdd = scanner.nextInt();
-                    scanner.nextLine();
+                    int developerIdToAdd = DataStorage.scanner.nextInt();
+                    DataStorage.scanner.nextLine();
 
-                    Employee devToAdd = null;
-                    for (Employee dev : developerService.getDevelopersRegisters()) {
-                        if (dev.getId() == employeeIdToAdd) {
+                    Developer devToAdd = null;
+                    for (Developer dev : DataStorage.developersRegisters) {
+                        if (dev.getId() == developerIdToAdd) {
                             devToAdd = dev;
                             break;
                         }
@@ -538,12 +535,12 @@ public class ManagerServiceImpl implements ManagerService {
                         System.out.println("ID = " + teamMember.getId() + ", Nome = " + teamMember.getName());
                     }
                     System.out.print("Digite o id do membro que desejas remover: ");
-                    int employeeIdToRemove = scanner.nextInt();
-                    scanner.nextLine();
+                    int developerIdToRemove = DataStorage.scanner.nextInt();
+                    DataStorage.scanner.nextLine();
 
                     int indexToRemove = -1;
                     for (int i = 0; i < teamToRemoveFrom.length; i++) {
-                        if (teamToRemoveFrom[i].getId() == employeeIdToRemove) {
+                        if (teamToRemoveFrom[i].getId() == developerIdToRemove) {
                             indexToRemove = i;
                             break;
                         }
@@ -577,10 +574,10 @@ public class ManagerServiceImpl implements ManagerService {
     public void technicalInformations(Manager manager) {
     System.out.println("Informacoes tecnicas");
         System.out.println("Departamento responsavel");
-        System.out.println(manager.getManagerDepartament());
+        System.out.println(manager.getManagerDepartament().getDepartament());
         System.out.println();
         System.out.println("Responsabilidade");
-        System.out.println(manager.getManagerResponsibility());
+        System.out.println(manager.getManagerResponsibility().getResponsability());
         System.out.println();
         if (manager.getEmployees() != null && manager.getEmployees().length > 0) {
             System.out.println("Equipe");
@@ -605,9 +602,5 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public void benefits(Employee employee) {
         employeeService.benefits(employee);
-    }
-
-    public Employee[] getManagersRegisters() {
-        return managersRegisters;
     }
 }

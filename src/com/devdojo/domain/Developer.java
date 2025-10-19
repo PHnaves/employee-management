@@ -21,21 +21,6 @@ public class Developer extends Employee {
         this.developerExperience = developerExperience;
     }
 
-    public Developer(int id, String name, String cpf, int age,
-                     Sex sex, String email, String phone, double salary,
-                     DeveloperSpecialty developerSpecialty, DeveloperLanguages[] developerLanguages,
-                     DeveloperExperience developerExperience, EmployeeBenefits[] benefits, Project project) {
-        super(id, name, cpf, age, sex, email, phone, salary, benefits);
-        this.developerSpecialty = developerSpecialty;
-        this.developerLanguages = developerLanguages;
-        this.developerExperience = developerExperience;
-        this.project = project;
-    }
-
-    public Developer(){
-
-    }
-
     public DeveloperSpecialty getSDeveloperSpecialty() {
         return developerSpecialty;
     }

@@ -8,73 +8,70 @@ import com.devdojo.domain.enums.Developer.DeveloperLanguages;
 import com.devdojo.domain.enums.Developer.DeveloperSpecialty;
 import com.devdojo.domain.enums.EmployeeBenefits;
 import com.devdojo.service.DeveloperService;
-
-import java.util.Scanner;
+import com.devdojo.storage.DataStorage;
 
 public class DeveloperServiceImpl implements DeveloperService {
-    public static final Scanner scanner = new Scanner(System.in);
     private final EmployeeServiceImpl employeeService = new EmployeeServiceImpl();
-    public static Employee[] developersRegisters = new Employee[]{};
 
     @Override
     public void createDeveloper() {
         System.out.println("-----Informacoes pessoais-----");
-        System.out.println("ID do usuario: ");
-        int employeeId = scanner.nextInt();
-        scanner.nextLine();
+        System.out.println("ID do desenvolvedor: ");
+        int developerId = DataStorage.scanner.nextInt();
+        DataStorage.scanner.nextLine();
 
-        System.out.println("Nome do funcionario");
-        String employeeName = scanner.nextLine();
+        System.out.println("Nome do desenvolvedor");
+        String developerName = DataStorage.scanner.nextLine();
 
-        System.out.println("Cpf do funcionario: ");
-        String employeeCpf = scanner.nextLine();
+        System.out.println("Cpf do desenvolvedor: ");
+        String developerCpf = DataStorage.scanner.nextLine();
 
-        System.out.println("Idade do funcionario: ");
-        int employeeAge = scanner.nextInt();
-        scanner.nextLine();
+        System.out.println("Idade do desenvolvedor: ");
+        int developerAge = DataStorage.scanner.nextInt();
+        DataStorage.scanner.nextLine();
 
-        Person.Sex employeeSex = null;
-        while(employeeSex == null) {
+        Person.Sex developerSex = null;
+        while(developerSex == null) {
             System.out.println("Sexo - MASCULINO OU FEMININO:");
-            String inputSex = scanner.nextLine().trim(); // remove espaços extras
+            String inputSex = DataStorage.scanner.nextLine().trim(); // remove espaços extras
             if (inputSex.equalsIgnoreCase("masculino")) {
-                employeeSex = Person.Sex.MASCULINO;
+                developerSex = Person.Sex.MASCULINO;
             } else if (inputSex.equalsIgnoreCase("feminino")) {
-                employeeSex = Person.Sex.FEMININO;
+                developerSex = Person.Sex.FEMININO;
             } else {
                 System.out.println("Sexo invalido. Por favor, digite um dos valores da lista");
             }
         }
 
-        System.out.println("Email do funcionario: ");
-        String employeeEmail = scanner.nextLine();
+        System.out.println("Email do desenvolvedor: ");
+        String developerEmail = DataStorage.scanner.nextLine();
 
-        System.out.println("Telefone do funcionario: ");
-        String employeePhone = scanner.nextLine();
+        System.out.println("Telefone do desenvolvedor: ");
+        String developerPhone = DataStorage.scanner.nextLine();
 
         System.out.println("-----Informacoes tecnicas-----");
-        System.out.println("Salario do funcionario: ");
-        double employeeSalary = scanner.nextDouble();
-        scanner.nextLine();
+        System.out.println("Salario do desenvolvedor: ");
+        double developerSalary = DataStorage.scanner.nextDouble();
+        DataStorage.scanner.nextLine();
 
         System.out.println("Especialidades disponiveis");
         for (DeveloperSpecialty developerSpecialty : DeveloperSpecialty.values()) {
             System.out.println(developerSpecialty.getSpecialty());
         }
 
-        DeveloperSpecialty employeeSpecialty = null;
+        DeveloperSpecialty developerSpecialty = null;
         while(true) {
             System.out.println("Digite respectivamente sua especialidade: ");
-            String input = scanner.nextLine();
+            String input = DataStorage.scanner.nextLine();
 
             for (DeveloperSpecialty ds : DeveloperSpecialty.values()) {
                 if (ds.getSpecialty().equalsIgnoreCase(input)) {
-                    employeeSpecialty = ds;
+                    developerSpecialty = ds;
                     break;
                 }
             }
 
-            if (employeeSpecialty != null) {
+            if (developerSpecialty != null) {
                 break;
             } else {
                 System.out.println("Especialidade invalida. Por favor, digite um dos valores da lista");
@@ -87,20 +84,20 @@ public class DeveloperServiceImpl implements DeveloperService {
         }
 
         System.out.println("Quantas linguagens quer adicionar ao cadastro? ");
-        int languagesQuantity = scanner.nextInt();
-        scanner.nextLine();
-        DeveloperLanguages[] languagesSelect = new DeveloperLanguages[languagesQuantity];
+        int languagesQuantity = DataStorage.scanner.nextInt();
+        DataStorage.scanner.nextLine();
+        DeveloperLanguages[] developerLanguages = new DeveloperLanguages[languagesQuantity];
 
         for (int i = 0; i < languagesQuantity; i++) {
             boolean valid = false;
 
             while (!valid) {
                 System.out.print((i + 1) + "ª linguagem: ");
-                String input = scanner.nextLine().toUpperCase().replace(" ", "_");
+                String input = DataStorage.scanner.nextLine().toUpperCase().replace(" ", "_");
 
                 for (DeveloperLanguages dl : DeveloperLanguages.values()) {
                     if (dl.name().equals(input)) {
-                        languagesSelect[i] = dl;
+                        developerLanguages[i] = dl;
                         valid = true;
                         break;
                     }
@@ -117,19 +114,19 @@ public class DeveloperServiceImpl implements DeveloperService {
             System.out.println(developerExperience.getExperience());
         }
 
-        DeveloperExperience employeeExperience = null;
+        DeveloperExperience developerExperience = null;
         while(true) {
             System.out.println("Digite respectivamente sua experiencia: ");
-            String input = scanner.nextLine();
+            String input = DataStorage.scanner.nextLine();
 
             for (DeveloperExperience de : DeveloperExperience.values()) {
                 if (de.getExperience().equalsIgnoreCase(input)) {
-                    employeeExperience = de;
+                    developerExperience = de;
                     break;
                 }
             }
 
-            if(employeeExperience != null) {
+            if(developerExperience != null) {
                 break;
             } else {
                 System.out.println("Experiencia invalida. Por favor, digite um dos valores da lista.");
@@ -143,20 +140,20 @@ public class DeveloperServiceImpl implements DeveloperService {
         }
 
         System.out.println("Quantos beneficios quer adicionar? ");
-        int benefitsQuantity = scanner.nextInt();
-        scanner.nextLine();
-        EmployeeBenefits[] benefitsSelect = new EmployeeBenefits[benefitsQuantity];
+        int benefitsQuantity = DataStorage.scanner.nextInt();
+        DataStorage.scanner.nextLine();
+        EmployeeBenefits[] developerBenefits = new EmployeeBenefits[benefitsQuantity];
 
         for (int i = 0; i < benefitsQuantity; i++) {
             boolean valid = false;
 
             while (!valid) {
                 System.out.print((i + 1) + "ª beneficio: ");
-                String input = scanner.nextLine().trim();
+                String input = DataStorage.scanner.nextLine().trim();
 
-                for (EmployeeBenefits eb : EmployeeBenefits.values()) {
-                    if (eb.getBenefits()[0].equalsIgnoreCase(input)) {
-                        benefitsSelect[i] = eb;
+                for (EmployeeBenefits db : EmployeeBenefits.values()) {
+                    if (db.getBenefits()[0].equalsIgnoreCase(input)) {
+                        developerBenefits[i] = db;
                         valid = true;
                         break;
                     }
@@ -168,39 +165,39 @@ public class DeveloperServiceImpl implements DeveloperService {
             }
         }
 
-        Employee dev = new Developer(
-          employeeId,
-          employeeName,
-          employeeCpf,
-          employeeAge,
-          employeeSex,
-          employeeEmail,
-          employeePhone,
-          employeeSalary,
-          employeeSpecialty,
-          languagesSelect,
-          employeeExperience,
-          benefitsSelect
+        Developer newDev = new Developer(
+          developerId,
+          developerName,
+          developerCpf,
+          developerAge,
+          developerSex,
+          developerEmail,
+          developerPhone,
+          developerSalary,
+          developerSpecialty,
+          developerLanguages,
+          developerExperience,
+          developerBenefits
         );
 
-        Employee[] newEmployee = new Employee[developersRegisters.length + 1];
+        Developer[] newDeveloperRegisters = new Developer[DataStorage.developersRegisters.length + 1];
 
-        for (int i = 0; i < developersRegisters.length; i++) {
-            newEmployee[i] = developersRegisters[i];
+        for (int i = 0; i < DataStorage.developersRegisters.length; i++) {
+            newDeveloperRegisters[i] = DataStorage.developersRegisters[i];
         }
 
-        newEmployee[developersRegisters.length] = dev;
+        newDeveloperRegisters[DataStorage.developersRegisters.length] = newDev;
 
-        developersRegisters = newEmployee;
+        DataStorage.developersRegisters = newDeveloperRegisters;
 
     }
 
     @Override
     public void showDevelopers() {
         System.out.println("Desenvolvedores cadastrados");
-        for (Employee employees : developersRegisters) {
-            System.out.println("ID = " + employees.getId());
-            System.out.println("Nome = " + employees.getName());
+        for (Developer dev : DataStorage.developersRegisters) {
+            System.out.println("ID = " + dev.getId());
+            System.out.println("Nome = " + dev.getName());
             System.out.println("-------------------------------");
         }
     }
@@ -208,9 +205,9 @@ public class DeveloperServiceImpl implements DeveloperService {
     @Override
     public void readDeveloper(int id) {
         Developer targetDeveloper = null;
-        for (Employee emp : developersRegisters) {
-            if (emp instanceof Developer && emp.getId() == id) {
-                targetDeveloper = (Developer) emp;
+        for (Developer dev : DataStorage.developersRegisters) {
+            if (dev.getId() == id) {
+                targetDeveloper = dev;
                 break;
             }
         }
@@ -231,9 +228,9 @@ public class DeveloperServiceImpl implements DeveloperService {
     @Override
     public void updateDeveloper(int id) {
         Developer targetDeveloper = null;
-        for (Employee emp : developersRegisters) {
-            if (emp instanceof Developer && emp.getId() == id) {
-                targetDeveloper = (Developer) emp;
+        for (Developer dev : DataStorage.developersRegisters) {
+            if (dev.getId() == id) {
+                targetDeveloper = dev;
                 break;
             }
         }
@@ -251,19 +248,19 @@ public class DeveloperServiceImpl implements DeveloperService {
             System.out.println("4 - Sexo");
             System.out.println("5 - voltar");
             System.out.println("Digite a opcao correspondente: ");
-            int option = scanner.nextInt();
-            scanner.nextLine();
+            int option = DataStorage.scanner.nextInt();
+            DataStorage.scanner.nextLine();
 
             String continueEdit = null;
             switch (option) {
                 case 1:
                     System.out.println("Digite o novo nome: ");
-                    String newName = scanner.nextLine();
+                    String newName = DataStorage.scanner.nextLine();
                     targetDeveloper.setName(newName);
                     System.out.println("Nome editado com sucesso!");
 
                     System.out.println("Quer continuar editando? SIM ou NAO");
-                    continueEdit = scanner.nextLine().toUpperCase();
+                    continueEdit = DataStorage.scanner.nextLine().toUpperCase();
                     if (continueEdit.equals("NAO")) {
                         System.out.println("Voltando ao menu anterior...");
                         return;
@@ -271,12 +268,12 @@ public class DeveloperServiceImpl implements DeveloperService {
                     break;
                 case 2:
                     System.out.println("Digite o novo CPF: ");
-                    String newCpf = scanner.nextLine();
+                    String newCpf = DataStorage.scanner.nextLine();
                     targetDeveloper.setCpf(newCpf);
                     System.out.println("CPF editado com sucesso!");
 
                     System.out.println("Quer continuar editando? SIM ou NAO");
-                    continueEdit = scanner.nextLine().toUpperCase();
+                    continueEdit = DataStorage.scanner.nextLine().toUpperCase();
                     if (continueEdit.equals("NAO")) {
                         System.out.println("Voltando ao menu anterior...");
                         return;
@@ -284,13 +281,13 @@ public class DeveloperServiceImpl implements DeveloperService {
                     break;
                 case 3:
                     System.out.println("Digite a nova idade: ");
-                    int newAge = scanner.nextInt();
-                    scanner.nextLine();
+                    int newAge = DataStorage.scanner.nextInt();
+                    DataStorage.scanner.nextLine();
                     targetDeveloper.setAge(newAge);
                     System.out.println("Idade editada com sucesso!");
 
                     System.out.println("Quer continuar editando? SIM ou NAO");
-                    continueEdit = scanner.nextLine();
+                    continueEdit = DataStorage.scanner.nextLine();
                     if (continueEdit.equals("NAO")) {
                         System.out.println("Voltando ao menu anterior...");
                         return;
@@ -300,7 +297,7 @@ public class DeveloperServiceImpl implements DeveloperService {
                     boolean isCorrect = false;
                     while(!isCorrect) {
                         System.out.println("Digite o novo Sexo - MASCULINO OU FEMININO:");
-                        String newSex = scanner.nextLine().trim(); // remove espaços extras
+                        String newSex = DataStorage.scanner.nextLine().trim(); // remove espaços extras
                         if (newSex.equalsIgnoreCase("masculino")) {
                             targetDeveloper.setSex(Person.Sex.MASCULINO);
                             System.out.println("Sexo editado com sucesso!");
@@ -315,7 +312,7 @@ public class DeveloperServiceImpl implements DeveloperService {
                     }
 
                     System.out.println("Quer continuar editando? Sim ou Nao");
-                    continueEdit = scanner.nextLine();
+                    continueEdit = DataStorage.scanner.nextLine();
                     if (continueEdit.equalsIgnoreCase("nao")) {
                         System.out.println("Voltando ao menu anterior...");
                         return;
@@ -336,9 +333,9 @@ public class DeveloperServiceImpl implements DeveloperService {
     @Override
     public void updateTechnicalInformations(int id) {
         Developer targetDeveloper = null;
-        for (Employee emp : developersRegisters) {
-            if (emp instanceof Developer && emp.getId() == id) {
-                targetDeveloper = (Developer) emp;
+        for (Developer dev : DataStorage.developersRegisters) {
+            if (dev.getId() == id) {
+                targetDeveloper = dev;
                 break;
             }
         }
@@ -355,21 +352,21 @@ public class DeveloperServiceImpl implements DeveloperService {
             System.out.println("3 - Experiencia");
             System.out.println("4 - Sair");
             System.out.println("Digite a opcao correspondente: ");
-            int option = scanner.nextInt();
-            scanner.nextLine();
+            int option = DataStorage.scanner.nextInt();
+            DataStorage.scanner.nextLine();
 
             String continueEdit = null;
             switch (option) {
                 case 1:
                     System.out.println("Especialidades disponiveis");
-                    for (DeveloperSpecialty developerSpecialty : DeveloperSpecialty.values()) {
-                        System.out.println(developerSpecialty.getSpecialty());
+                    for (DeveloperSpecialty ds : DeveloperSpecialty.values()) {
+                        System.out.println(ds.getSpecialty());
                     }
 
                     DeveloperSpecialty newSpecialty = null;
                     while(true) {
                         System.out.println("Digite respectivamente sua nova especialidade: ");
-                        String input = scanner.nextLine();
+                        String input = DataStorage.scanner.nextLine();
 
                         for (DeveloperSpecialty ds : DeveloperSpecialty.values()) {
                             if (ds.getSpecialty().equalsIgnoreCase(input)) {
@@ -388,7 +385,7 @@ public class DeveloperServiceImpl implements DeveloperService {
                     }
 
                     System.out.println("Quer continuar editando? SIM ou NAO");
-                    continueEdit = scanner.nextLine().toUpperCase();
+                    continueEdit = DataStorage.scanner.nextLine().toUpperCase();
                     if (continueEdit.equals("NAO")) {
                         System.out.println("Voltando ao menu anterior...");
                         return;
@@ -396,13 +393,13 @@ public class DeveloperServiceImpl implements DeveloperService {
                     break;
                 case 2:
                     System.out.println("Linguagens disponiveis");
-                    for (DeveloperLanguages developerLanguages : DeveloperLanguages.values()) {
-                        System.out.println(developerLanguages);
+                    for (DeveloperLanguages dl : DeveloperLanguages.values()) {
+                        System.out.println(dl);
                     }
 
                     System.out.println("Quantas linguagens quer adicionar? ");
-                    int languagesQuantity = scanner.nextInt();
-                    scanner.nextLine();
+                    int languagesQuantity = DataStorage.scanner.nextInt();
+                    DataStorage.scanner.nextLine();
                     DeveloperLanguages[] newLanguagesSelect = new DeveloperLanguages[languagesQuantity];
 
                     for (int i = 0; i < languagesQuantity; i++) {
@@ -410,7 +407,7 @@ public class DeveloperServiceImpl implements DeveloperService {
 
                         while (!valid) {
                             System.out.print((i + 1) + "ª linguagem: ");
-                            String input = scanner.nextLine().toUpperCase().replace(" ", "_");
+                            String input = DataStorage.scanner.nextLine().toUpperCase().replace(" ", "_");
 
                             for (DeveloperLanguages dl : DeveloperLanguages.values()) {
                                 if (dl.name().equals(input)) {
@@ -429,7 +426,7 @@ public class DeveloperServiceImpl implements DeveloperService {
                     System.out.println("Linguagem editada com sucesso!");
 
                     System.out.println("Quer continuar editando? SIM ou NAO");
-                    continueEdit = scanner.nextLine().toUpperCase();
+                    continueEdit = DataStorage.scanner.nextLine().toUpperCase();
                     if (continueEdit.equals("NAO")) {
                         System.out.println("Voltando ao menu anterior...");
                         return;
@@ -437,14 +434,14 @@ public class DeveloperServiceImpl implements DeveloperService {
                     break;
                 case 3:
                     System.out.println("Experiencias disponiveis");
-                    for(DeveloperExperience developerExperience : DeveloperExperience.values()) {
-                        System.out.println(developerExperience.getExperience());
+                    for(DeveloperExperience de : DeveloperExperience.values()) {
+                        System.out.println(de.getExperience());
                     }
 
                     DeveloperExperience newExperience = null;
                     while(true) {
                         System.out.println("Digite respectivamente sua nova experiencia: ");
-                        String input = scanner.nextLine();
+                        String input = DataStorage.scanner.nextLine();
 
                         for (DeveloperExperience de : DeveloperExperience.values()) {
                             if (de.getExperience().equalsIgnoreCase(input)) {
@@ -463,7 +460,7 @@ public class DeveloperServiceImpl implements DeveloperService {
                     }
 
                     System.out.println("Quer continuar editando? SIM ou NAO");
-                    continueEdit = scanner.nextLine().toUpperCase();
+                    continueEdit = DataStorage.scanner.nextLine().toUpperCase();
                     if (continueEdit.equals("NAO")) {
                         System.out.println("Voltando ao menu anterior...");
                         return;
@@ -483,8 +480,8 @@ public class DeveloperServiceImpl implements DeveloperService {
     public void deleteDeveloper(int id) {
         int indexToRemove = -1;
 
-        for (int i = 0; i < developersRegisters.length; i++) {
-            if (developersRegisters[i].getId() == id) {
+        for (int i = 0; i < DataStorage.developersRegisters.length; i++) {
+            if (DataStorage.developersRegisters[i].getId() == id) {
                 indexToRemove = i;
                 break;
             }
@@ -495,15 +492,15 @@ public class DeveloperServiceImpl implements DeveloperService {
             return;
         }
 
-        Employee[] temp = new Employee[developersRegisters.length - 1];
+        Developer[] deleteDeveloper = new Developer[DataStorage.developersRegisters.length - 1];
 
-        for (int i = 0, j = 0; i < developersRegisters.length; i++) {
+        for (int i = 0, j = 0; i < DataStorage.developersRegisters.length; i++) {
             if (i != indexToRemove) {
-                temp[j++] = developersRegisters[i];
+                deleteDeveloper[j++] = DataStorage.developersRegisters[i];
             }
         }
 
-        developersRegisters = temp;
+        DataStorage.developersRegisters = deleteDeveloper;
 
         System.out.println("Desenvolvedor com ID " + id + " removido com sucesso!");
     }
@@ -514,24 +511,43 @@ public class DeveloperServiceImpl implements DeveloperService {
         System.out.println("Nivel de experiencia: " + developer.getDeveloperExperience());
         System.out.println("Especialidade: " + developer.getSDeveloperSpecialty());
         System.out.println("Linguagens utilizadas");
-        for (DeveloperLanguages developerLanguages : developer.getDeveloperLanguages()) {
-            System.out.println(developerLanguages.getLanguages());
+        for (DeveloperLanguages dl : developer.getDeveloperLanguages()) {
+            System.out.println(dl.getLanguages());
         }
     }
 
     @Override
-    public void project(Developer developer) {
-        System.out.println("Projeto atual");
-        System.out.println("Titulo do projeto" + developer.getProject().getTitle());
+    public void project(int id) {
+        Developer targetDeveloper = null;
+        for (Developer dev : DataStorage.developersRegisters) {
+            if (dev.getId() == id) {
+                targetDeveloper = dev;
+                break;
+            }
+        }
+
+        if (targetDeveloper == null) {
+            System.out.println("Desenvolvedor com ID " + id + " não encontrado.");
+            return;
+        }
+
+        System.out.println("\n------ PROJETO DESENVOLVEDOR: " + targetDeveloper.getName() + " ------");
+        if (targetDeveloper.getProject() == null){
+            System.out.println("Nenhum projeto associado");
+            return;
+        }
+        System.out.println("Titulo: " + targetDeveloper.getProject().getTitle());
         System.out.println("Descricao");
-        System.out.println(developer.getProject().getDescription());
-        if (developer.getProject().getDevelopers() != null ) {
+        System.out.println(targetDeveloper.getProject().getDescription());
+        System.out.println("Data de inicio: " + targetDeveloper.getProject().getStartDate());
+        System.out.println("Data de conclusao: " + targetDeveloper.getProject().getEndDate());
+        if (targetDeveloper.getProject().getDevelopers() != null ) {
             System.out.println("Equipe");
-            for (Developer developer1 : developer.getProject().getDevelopers()) {
-                System.out.println(developer1.getName());
+            for (Developer team: targetDeveloper.getProject().getDevelopers()) {
+                System.out.println(team.getName());
             }
         }else {
-            System.out.println("Projeto sem membros no momento");
+            System.out.println("Sem equipe! somente voce no momento");
         }
 
     }
@@ -549,9 +565,5 @@ public class DeveloperServiceImpl implements DeveloperService {
     @Override
     public void benefits(Employee employee) {
         employeeService.benefits(employee);
-    }
-
-    public Employee[] getDevelopersRegisters() {
-        return developersRegisters;
     }
 }

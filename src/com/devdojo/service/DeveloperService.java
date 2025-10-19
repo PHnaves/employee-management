@@ -10,5 +10,5 @@ public interface DeveloperService extends EmployeeService {
     void updateTechnicalInformations(int id);
     void deleteDeveloper(int id);
     void technicalInformations(Developer developer);
-    void project(Developer developer);
+    void project(int id);
 }

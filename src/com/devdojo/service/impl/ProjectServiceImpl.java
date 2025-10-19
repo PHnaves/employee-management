@@ -4,50 +4,49 @@ import com.devdojo.domain.Developer;
 import com.devdojo.domain.Employee;
 import com.devdojo.domain.Project;
 import com.devdojo.service.ProjectService;
+import com.devdojo.storage.DataStorage;
 
+import javax.xml.crypto.Data;
 import java.util.Scanner;
 
 public class ProjectServiceImpl implements ProjectService {
-    public static final Scanner scanner = new Scanner(System.in);
-    private final DeveloperServiceImpl developerService = new DeveloperServiceImpl();
-    public static Project[] projectsRegistered = new Project[]{};
 
     @Override
     public void createProject() {
         System.out.println("Digite o titulo do projeto");
-        String projectTitle = scanner.nextLine();
+        String projectTitle = DataStorage.scanner.nextLine();
 
         System.out.println("Digite a descricao do projeto");
-        String projectDescription = scanner.nextLine();
+        String projectDescription = DataStorage.scanner.nextLine();
 
         System.out.println("------ ADICIONAR DESENVOLVEDOR ------");
-        if (developerService.getDevelopersRegisters().length == 0) {
+        if (DataStorage.developersRegisters.length == 0) {
             System.out.println("Nenhum desenvolvedor cadastrado no sistema");
             System.out.println("Cadastre um desenvolvedor para poder criar um projeto");
             return;
         }
         System.out.println("Desenvolvedores disponíveis:");
-        for (Employee employeeAvailable : developerService.getDevelopersRegisters()) {
-            System.out.println("ID = " + employeeAvailable.getId() + ", Nome = " + employeeAvailable.getName());
+        for (Developer developerAvailable : DataStorage.developersRegisters) {
+            System.out.println("ID = " + developerAvailable.getId() + ", Nome = " + developerAvailable.getName());
         }
 
         System.out.println("Quantos desenvolvedores vai querer adicionar: ");
-        int developersQunatity = scanner.nextInt();
-        scanner.nextLine();
-        Developer[] developersSelect = new Developer[developersQunatity];
+        int developersQuantity = DataStorage.scanner.nextInt();
+        DataStorage.scanner.nextLine();
+        Developer[] developersSelect = new Developer[developersQuantity];
 
-        for (int i = 0; i < developersQunatity; i++) {
+        for (int i = 0; i < developersQuantity; i++) {
             boolean valid = false;
 
             System.out.println("Digite somente o ID dos desenvolvedores que deseja adicionar!");
-            while(!valid) {
-                System.out.println((i + 1) + "Desenvolvedor: ");
-                int input = scanner.nextInt();
-                scanner.nextLine();
+            while (!valid) {
+                System.out.println((i + 1) + " Desenvolvedor: ");
+                int input = DataStorage.scanner.nextInt();
+                DataStorage.scanner.nextLine();
 
-                for (Employee dev : developerService.getDevelopersRegisters()) {
+                for (Developer dev : DataStorage.developersRegisters) {
                     if (dev.getId() == input) {
-                        developersSelect[i] = (Developer) dev;
+                        developersSelect[i] = dev;
                         valid = true;
                         break;
                     }
@@ -61,10 +60,10 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         System.out.println("Digite a data de inicio do projeto");
-        String projectStartDate = scanner.nextLine();
+        String projectStartDate = DataStorage.scanner.nextLine();
 
-        System.out.println("Digite a data de inicio do projeto");
-        String projectEndDate = scanner.nextLine();
+        System.out.println("Digite a data de conclusao do projeto");
+        String projectEndDate = DataStorage.scanner.nextLine();
 
         Project project = new Project(
                 projectTitle,
@@ -74,22 +73,31 @@ public class ProjectServiceImpl implements ProjectService {
                 projectEndDate
         );
 
-        Project[] newProject = new Project[projectsRegistered.length + 1];
-
-        for (int i = 0; i < projectsRegistered.length; i++) {
-            newProject[i] = projectsRegistered[i];
+        if (developersSelect != null) {
+            for (Developer d : developersSelect) {
+                if (d != null) {
+                    d.setProject(project);
+                }
+            }
         }
 
-        newProject[projectsRegistered.length] = project;
+        Project[] newProjectRegisters = new Project[DataStorage.projectsRegistered.length + 1];
 
-        projectsRegistered = newProject;
+        for (int i = 0; i < DataStorage.projectsRegistered.length; i++) {
+            newProjectRegisters[i] = DataStorage.projectsRegistered[i];
+        }
 
+        newProjectRegisters[DataStorage.projectsRegistered.length] = project;
+
+        DataStorage.projectsRegistered = newProjectRegisters;
+
+        System.out.println("Projeto criado com sucesso!");
     }
 
     @Override
     public void showProjects() {
         System.out.println("Projetos cadastrados");
-        for (Project projects : projectsRegistered) {
+        for (Project projects : DataStorage.projectsRegistered) {
             System.out.println("Titulo = " + projects.getTitle());
             System.out.println("Descricao");
             System.out.println(projects.getDescription());
@@ -100,7 +108,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void readProject(String title) {
         Project targetProject = null;
-        for (Project project : projectsRegistered) {
+        for (Project project : DataStorage.projectsRegistered) {
             if (project.getTitle().equalsIgnoreCase(title)) {
                 targetProject = project;
             }
@@ -125,7 +133,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void updateProject(String title) {
         Project targetProject = null;
-        for (Project project : projectsRegistered) {
+        for (Project project : DataStorage.projectsRegistered) {
             if (project.getTitle().equalsIgnoreCase(title)) {
                 targetProject = project;
             }
@@ -136,7 +144,7 @@ public class ProjectServiceImpl implements ProjectService {
             return;
         }
 
-        while(true) {
+        while (true) {
             System.out.println("\n------ EDITAR PROJETO: " + targetProject.getTitle() + " ------");
             System.out.println("1 - Titulo");
             System.out.println("2 - Descricao");
@@ -144,19 +152,19 @@ public class ProjectServiceImpl implements ProjectService {
             System.out.println("4 - Data de Conclusao");
             System.out.println("5 - Voltar");
             System.out.println("Digite a opcao correspondente: ");
-            int option = scanner.nextInt();
-            scanner.nextLine();
+            int option = DataStorage.scanner.nextInt();
+            DataStorage.scanner.nextLine();
 
             String continueEdit = null;
             switch (option) {
                 case 1:
                     System.out.println("Digite o novo titulo: ");
-                    String newTitle = scanner.nextLine();
+                    String newTitle = DataStorage.scanner.nextLine();
                     targetProject.setTitle(newTitle);
                     System.out.println("Titulo editado com sucesso");
 
                     System.out.println("Quer continuar editando? SIM ou NAO");
-                    continueEdit = scanner.nextLine().toUpperCase();
+                    continueEdit = DataStorage.scanner.nextLine().toUpperCase();
                     if (continueEdit.equals("NAO")) {
                         System.out.println("Voltando ao menu anterior...");
                         return;
@@ -164,12 +172,12 @@ public class ProjectServiceImpl implements ProjectService {
                     break;
                 case 2:
                     System.out.println("Digite a nova descricao: ");
-                    String newDescription = scanner.nextLine();
+                    String newDescription = DataStorage.scanner.nextLine();
                     targetProject.setDescription(newDescription);
                     System.out.println("Descricao editada com sucesso");
 
                     System.out.println("Quer continuar editando? SIM ou NAO");
-                    continueEdit = scanner.nextLine().toUpperCase();
+                    continueEdit = DataStorage.scanner.nextLine().toUpperCase();
                     if (continueEdit.equals("NAO")) {
                         System.out.println("Voltando ao menu anterior...");
                         return;
@@ -177,11 +185,11 @@ public class ProjectServiceImpl implements ProjectService {
                     break;
                 case 3:
                     System.out.println("Digite a nova data de inicio: ");
-                    String newStartDate = scanner.nextLine();
+                    String newStartDate = DataStorage.scanner.nextLine();
                     targetProject.setStartDate(newStartDate);
 
                     System.out.println("Quer continuar editando? SIM ou NAO");
-                    continueEdit = scanner.nextLine().toUpperCase();
+                    continueEdit = DataStorage.scanner.nextLine().toUpperCase();
                     if (continueEdit.equals("NAO")) {
                         System.out.println("Voltando ao menu anterior...");
                         return;
@@ -189,11 +197,11 @@ public class ProjectServiceImpl implements ProjectService {
                     break;
                 case 4:
                     System.out.println("Digite a nova data de conclusao: ");
-                    String newEndDate = scanner.nextLine();
+                    String newEndDate = DataStorage.scanner.nextLine();
                     targetProject.setEndDate(newEndDate);
 
                     System.out.println("Quer continuar editando? SIM ou NAO");
-                    continueEdit = scanner.nextLine().toUpperCase();
+                    continueEdit = DataStorage.scanner.nextLine().toUpperCase();
                     if (continueEdit.equals("NAO")) {
                         System.out.println("Voltando ao menu anterior...");
                         return;
@@ -212,15 +220,15 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void deleteProject(String title) {
-        for(Project projectSelect : projectsRegistered) {
-            if(projectSelect.getTitle().equalsIgnoreCase(title)) {
-                Project[] proj =  new Project[projectsRegistered.length - 1];
-                for (int i = 0; i < projectsRegistered.length; i++) {
-                    if (!projectsRegistered[i].getTitle().equalsIgnoreCase(title)) {
-                        proj[i] = projectsRegistered[i];
+        for (Project projectSelect : DataStorage.projectsRegistered) {
+            if (projectSelect.getTitle().equalsIgnoreCase(title)) {
+                Project[] deleteProject = new Project[DataStorage.projectsRegistered.length - 1];
+                for (int i = 0; i < DataStorage.projectsRegistered.length; i++) {
+                    if (!DataStorage.projectsRegistered[i].getTitle().equalsIgnoreCase(title)) {
+                        deleteProject[i] = DataStorage.projectsRegistered[i];
                     }
                 }
-                projectsRegistered = proj;
+                DataStorage.projectsRegistered = deleteProject;
                 System.out.println("Projeto com o titulo " + title + " removido com sucesso");
                 return;
             }
@@ -232,33 +240,34 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void managerTeam(String title) {
         Project targetProject = null;
-        for (Project project : projectsRegistered) {
+        for (Project project : DataStorage.projectsRegistered) {
             if (project.getTitle().equalsIgnoreCase(title)) {
                 targetProject = project;
+                break;
             }
         }
 
         if (targetProject == null) {
-            System.out.println("Projeto com o titulo " + title + " nao encontrado.");
+            System.out.println("Projeto com o título " + title + " não encontrado.");
             return;
         }
 
-        while(true) {
+        while (true) {
             System.out.println("\n------ GERENCIAR EQUIPE DO PROJETO: " + targetProject.getTitle() + " ------");
             System.out.println("1 - Ver equipe do projeto");
             System.out.println("2 - Adicionar developer ao projeto");
             System.out.println("3 - Remover developer do projeto");
             System.out.println("4 - Voltar ao menu anterior");
-            System.out.println("Escolha uma opção: ");
-            int option = scanner.nextInt();
-            scanner.nextLine();
+            System.out.print("Escolha uma opção: ");
+            int option = DataStorage.scanner.nextInt();
+            DataStorage.scanner.nextLine();
 
             switch (option) {
                 case 1:
                     System.out.println("------ EQUIPE ATUAL DO PROJETO ------");
-                    Employee[] currentTeam = targetProject.getDevelopers();
+                    Developer[] currentTeam = targetProject.getDevelopers();
                     if (currentTeam != null && currentTeam.length > 0) {
-                        for (Employee teamMember : currentTeam) {
+                        for (Developer teamMember : currentTeam) {
                             System.out.println("ID   = " + teamMember.getId());
                             System.out.println("Nome = " + teamMember.getName());
                             System.out.println("--------------------------");
@@ -267,76 +276,88 @@ public class ProjectServiceImpl implements ProjectService {
                         System.out.println("Nenhum desenvolvedor no projeto.");
                     }
                     break;
+
                 case 2:
                     System.out.println("------ ADICIONAR DESENVOLVEDOR AO PROJETO ------");
-                    if (developerService.getDevelopersRegisters().length == 0) {
+                    if (DataStorage.developersRegisters.length == 0) {
                         System.out.println("Nenhum desenvolvedor cadastrado no sistema para adicionar.");
                         break;
                     }
 
                     System.out.println("Desenvolvedores disponíveis:");
-                    for (Employee employeeAvailable : developerService.getDevelopersRegisters()) {
-                        System.out.println("ID = " + employeeAvailable.getId() + ", Nome = " + employeeAvailable.getName());
+                    for (Developer developerAvailable : DataStorage.developersRegisters) {
+                        System.out.println("ID = " + developerAvailable.getId() + ", Nome = " + developerAvailable.getName());
                     }
 
                     System.out.print("Digite o ID do novo membro da equipe: ");
-                    int employeeIdToAdd = scanner.nextInt();
-                    scanner.nextLine();
+                    int developerIdToAdd = DataStorage.scanner.nextInt();
+                    DataStorage.scanner.nextLine();
 
-                    Employee devToAdd = null;
-                    for (Employee dev : developerService.getDevelopersRegisters()) {
-                        if (dev.getId() == employeeIdToAdd) {
-                            devToAdd = dev;
+                    Developer devToAdd = null;
+                    int devIndex = -1;
+                    for (int i = 0; i < DataStorage.developersRegisters.length; i++) {
+                        if (DataStorage.developersRegisters[i].getId() == developerIdToAdd) {
+                            devToAdd = DataStorage.developersRegisters[i];
+                            devIndex = i;
                             break;
                         }
                     }
 
                     if (devToAdd == null) {
                         System.out.println("ERRO: Desenvolvedor com ID informado não encontrado.");
-                    } else {
-                        Employee[] oldTeam = targetProject.getDevelopers() == null ? new Employee[0] : targetProject.getDevelopers();
+                        break;
+                    }
 
-                        boolean alreadyInTeam = false;
-                        for(Employee member : oldTeam) {
-                            if(member.getId() == devToAdd.getId()){
-                                alreadyInTeam = true;
-                                break;
-                            }
-                        }
+                    Developer[] oldTeam = targetProject.getDevelopers() == null ? new Developer[0] : targetProject.getDevelopers();
 
-                        if(alreadyInTeam) {
-                            System.out.println("ERRO: Este desenvolvedor já faz parte do projeto.");
-                        } else {
-                            Employee[] newTeam = new Employee[oldTeam.length + 1];
-                            for (int i = 0; i < oldTeam.length; i++) {
-                                newTeam[i] = oldTeam[i];
-                            }
-                            newTeam[oldTeam.length] = devToAdd;
-
-                            targetProject.setDevelopers((Developer[])newTeam);
-                            System.out.println("Novo membro adicionado ao projeto com sucesso!");
+                    boolean alreadyInTeam = false;
+                    for (Developer member : oldTeam) {
+                        if (member.getId() == devToAdd.getId()) {
+                            alreadyInTeam = true;
+                            break;
                         }
                     }
+
+                    if (alreadyInTeam) {
+                        System.out.println("ERRO: Este desenvolvedor já faz parte do projeto.");
+                        break;
+                    }
+
+                    Developer[] newTeam = new Developer[oldTeam.length + 1];
+                    for (int i = 0; i < oldTeam.length; i++) {
+                        newTeam[i] = oldTeam[i];
+                    }
+                    newTeam[oldTeam.length] = devToAdd;
+
+                    targetProject.setDevelopers(newTeam);
+
+                    DataStorage.developersRegisters[devIndex].setProject(targetProject);
+
+                    System.out.println("Novo membro adicionado ao projeto com sucesso!");
                     break;
+
                 case 3:
                     System.out.println("------ REMOVER DESENVOLVEDOR DO PROJETO ------");
-                    Employee[] teamToRemoveFrom = targetProject.getDevelopers();
+                    Developer[] teamToRemoveFrom = targetProject.getDevelopers();
                     if (teamToRemoveFrom == null || teamToRemoveFrom.length == 0) {
                         System.out.println("O projeto já está vazio. Nenhum membro para remover.");
                         break;
                     }
 
                     System.out.println("Membros do projeto:");
-                    for (Employee teamMember : teamToRemoveFrom) {
+                    for (Developer teamMember : teamToRemoveFrom) {
                         System.out.println("ID = " + teamMember.getId() + ", Nome = " + teamMember.getName());
                     }
-                    System.out.print("Digite o id do membro que desejas remover: ");
-                    int employeeIdToRemove = scanner.nextInt();
-                    scanner.nextLine();
 
+                    System.out.print("Digite o ID do membro que desejas remover: ");
+                    int developerIdToRemove = DataStorage.scanner.nextInt();
+                    DataStorage.scanner.nextLine();
+
+                    Developer devToRemove = null;
                     int indexToRemove = -1;
                     for (int i = 0; i < teamToRemoveFrom.length; i++) {
-                        if (teamToRemoveFrom[i].getId() == employeeIdToRemove) {
+                        if (teamToRemoveFrom[i].getId() == developerIdToRemove) {
+                            devToRemove = teamToRemoveFrom[i];
                             indexToRemove = i;
                             break;
                         }
@@ -344,20 +365,32 @@ public class ProjectServiceImpl implements ProjectService {
 
                     if (indexToRemove == -1) {
                         System.out.println("ERRO: Membro com o ID informado não encontrado no projeto.");
-                    } else {
-                        Employee[] newTeam = new Employee[teamToRemoveFrom.length - 1];
-                        for (int i = 0, j = 0; i < teamToRemoveFrom.length; i++) {
-                            if (i != indexToRemove) {
-                                newTeam[j++] = teamToRemoveFrom[i];
-                            }
-                        }
-                        targetProject.setDevelopers((Developer[]) newTeam);
-                        System.out.println("Membro removido do projeto com sucesso!");
+                        break;
                     }
+
+                    Developer[] newTeamRemove = new Developer[teamToRemoveFrom.length - 1];
+                    for (int i = 0, j = 0; i < teamToRemoveFrom.length; i++) {
+                        if (i != indexToRemove) {
+                            newTeamRemove[j++] = teamToRemoveFrom[i];
+                        }
+                    }
+
+                    targetProject.setDevelopers(newTeamRemove);
+
+                    for (int i = 0; i < DataStorage.developersRegisters.length; i++) {
+                        if (DataStorage.developersRegisters[i].getId() == developerIdToRemove) {
+                            DataStorage.developersRegisters[i].setProject(null);
+                            break;
+                        }
+                    }
+
+                    System.out.println("Membro removido do projeto com sucesso!");
                     break;
+
                 case 4:
                     System.out.println("Voltando ao menu anterior...");
                     return;
+
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
                     break;

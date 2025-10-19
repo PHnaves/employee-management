@@ -16,15 +16,6 @@ public class Manager extends Employee {
         this.managerResponsibility = managerResponsibility;
     }
 
-    public Manager(int id, String name, String cpf, int age, Sex sex, String email, String phone,
-                   double salary, EmployeeBenefits[] benefits, ManagerDepartament managerDepartament,
-                   ManagerResponsibility managerResponsibility, Employee[] employees) {
-        super(id, name, cpf, age, sex, email, phone, salary, benefits);
-        this.managerDepartament = managerDepartament;
-        this.managerResponsibility = managerResponsibility;
-        this.employees = employees;
-    }
-
     public ManagerDepartament getManagerDepartament() {
         return managerDepartament;
     }

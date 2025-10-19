@@ -21,10 +21,6 @@ public abstract class Employee extends Person {
         this.benefits = benefits;
     }
 
-    public Employee(){
-
-    }
-
     public int getId(){
         return this.id;
     }

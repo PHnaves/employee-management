@@ -104,8 +104,9 @@ public class Menu {
                     System.out.println("2 - listar desenvolvedores");
                     System.out.println("3 - Editar desenvolvedor");
                     System.out.println("4 - Relatorio completo desenvolvedor");
-                    System.out.println("5 - Demitir desenvolvedor");
-                    System.out.println("6 - Voltar");
+                    System.out.println("5 - Ver projeto associado");
+                    System.out.println("6 - Demitir desenvolvedor");
+                    System.out.println("7 - Voltar");
                     int optionDeveloper = scanner.nextInt();
                     scanner.nextLine();
 
@@ -145,13 +146,20 @@ public class Menu {
                             developerService.readDeveloper(reportId);
                             break;
                         case 5:
+                            System.out.println("Digite o id do desenvolvedor que quer ver o projeto associado");
+                            int projectId = scanner.nextInt();
+                            scanner.nextLine();
+
+                            developerService.project(projectId);
+                            break;
+                        case 6:
                             System.out.println("Digite o id do desenvolvedor que quer demitir");
                             int deleteId = scanner.nextInt();
                             scanner.nextLine();
 
                             developerService.deleteDeveloper(deleteId);
                             break;
-                        case 6:
+                        case 7:
                             back = true;
                             break;
                         default:
